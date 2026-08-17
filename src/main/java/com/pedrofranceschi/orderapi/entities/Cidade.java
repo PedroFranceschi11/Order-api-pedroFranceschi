@@ -5,11 +5,12 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter
-@Table(name = "cliente")
+@Getter
+@Setter
+@Table(name = "cidade")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Cliente {
+public class Cidade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,22 +19,16 @@ public class Cliente {
 
     private String nome;
 
-    private String CNPJ;
-
-    private String contato;
-
     @ManyToOne
-    @JoinColumn(name = "cidade_id")
-    private Cidade cidade;
+    @JoinColumn(name = "estado_id")
+    private Estado estado;
 
-    public Cliente() {
+    public Cidade() {
     }
 
-    public Cliente(Integer id, String nome, String CNPJ, String contato, Cidade cidade) {
+    public Cidade(Integer id, String nome, Estado estado) {
         this.id = id;
         this.nome = nome;
-        this.CNPJ = CNPJ;
-        this.contato = contato;
-        this.cidade = cidade;
+        this.estado = estado;
     }
 }
