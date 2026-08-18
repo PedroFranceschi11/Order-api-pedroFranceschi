@@ -1,20 +1,20 @@
 package com.pedrofranceschi.orderapi.entities;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter @Setter
 @Table(name = "cliente")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private Integer id;
+    private Long id;
 
     private String nome;
 
@@ -26,14 +26,5 @@ public class Cliente {
     @JoinColumn(name = "cidade_id")
     private Cidade cidade;
 
-    public Cliente() {
-    }
 
-    public Cliente(Integer id, String nome, String CNPJ, String contato, Cidade cidade) {
-        this.id = id;
-        this.nome = nome;
-        this.CNPJ = CNPJ;
-        this.contato = contato;
-        this.cidade = cidade;
-    }
 }

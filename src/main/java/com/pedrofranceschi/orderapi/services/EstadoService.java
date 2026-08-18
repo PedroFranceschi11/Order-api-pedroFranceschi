@@ -18,7 +18,7 @@ public class EstadoService {
         return estadoRepository.findAll();
     }
 
-    public Estado findById(Integer id) {
+    public Estado findById(Long id) {
         return estadoRepository.findById(id).get();
     }
 

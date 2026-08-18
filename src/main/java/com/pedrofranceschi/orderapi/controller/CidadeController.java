@@ -25,12 +25,12 @@ public class CidadeController {
    }
 
    @GetMapping(value = "/{id}")
-    public ResponseEntity<Cidade> findById(@PathVariable Integer id) {
+    public ResponseEntity<Cidade> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(cidadeService.findById(id));
     }
 
     @GetMapping(value = "/estado/{estadoId}")
-    public ResponseEntity<List<Cidade>> findByEstado(@PathVariable Integer estadoId){
+    public ResponseEntity<List<Cidade>> findByEstado(@PathVariable Long estadoId){
        return ResponseEntity.ok().body(cidadeService.findByEstado(estadoId));
     }
 }

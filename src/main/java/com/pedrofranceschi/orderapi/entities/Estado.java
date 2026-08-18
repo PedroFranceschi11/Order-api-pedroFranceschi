@@ -1,13 +1,13 @@
 package com.pedrofranceschi.orderapi.entities;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Table (name = "estado")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Estado {
@@ -15,18 +15,11 @@ public class Estado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private Integer id;
+    private Long id;
 
     private String nome;
 
     private String uf;
 
-    public Estado() {
-    }
 
-    public Estado(Integer id, String nome, String uf) {
-        this.id = id;
-        this.nome = nome;
-        this.uf = uf;
-    }
 }

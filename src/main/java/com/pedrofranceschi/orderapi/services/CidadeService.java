@@ -17,11 +17,11 @@ public class CidadeService {
         return cidadeRepository.findAll();
     }
 
-    public Cidade findById(Integer Id) {
+    public Cidade findById(Long Id) {
         return cidadeRepository.findById(Id).get();
     }
 
-    public List<Cidade> findByEstado(Integer estadoId) {
+    public List<Cidade> findByEstado(Long estadoId) {
         return cidadeRepository.findByEstadoId(estadoId);
     }
 

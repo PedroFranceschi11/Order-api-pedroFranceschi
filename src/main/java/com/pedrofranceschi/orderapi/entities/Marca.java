@@ -1,27 +1,21 @@
 package com.pedrofranceschi.orderapi.entities;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Table(name = "marca")
 @Entity
-@Getter @Setter
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Marca{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private Integer id;
+    private Long id;
 
     private String nome;
 
-    public Marca() {
-    }
-
-    public Marca(Integer id, String nome) {
-        this.id = id;
-        this.nome = nome;
-    }
 }
