@@ -1,4 +1,4 @@
-package com.pedrofranceschi.orderapi.resources;
+package com.pedrofranceschi.orderapi.controller;
 
 import com.pedrofranceschi.orderapi.entities.Estado;
 import com.pedrofranceschi.orderapi.repository.EstadoRepository;
@@ -13,11 +13,11 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/estados")
 
-public class EstadoResource {
+public class EstadoController {
 
     private EstadoRepository estadoRepository;
 
-    public EstadoResource(EstadoRepository estadoRepository) {
+    public EstadoController(EstadoRepository estadoRepository) {
         this.estadoRepository = estadoRepository;
     }
 
