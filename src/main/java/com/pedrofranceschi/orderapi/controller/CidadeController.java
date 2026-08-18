@@ -2,6 +2,7 @@ package com.pedrofranceschi.orderapi.controller;
 
 import com.pedrofranceschi.orderapi.entities.Cidade;
 import com.pedrofranceschi.orderapi.repository.CidadeRepository;
+import com.pedrofranceschi.orderapi.services.CidadeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,20 +17,20 @@ import java.util.List;
 @AllArgsConstructor
 public class CidadeController {
 
-    private final CidadeRepository repository;
+   private final CidadeService cidadeService;
 
-    @GetMapping
+   @GetMapping
     public ResponseEntity<List<Cidade>> findAll() {
-        return ResponseEntity.ok().body(repository.findAll());
-    }
+       return ResponseEntity.ok().body(cidadeService.findAll());
+   }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Cidade>findById(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(repository.findById(id).get());
+   @GetMapping(value = "/{id}")
+    public ResponseEntity<Cidade> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok().body(cidadeService.findById(id));
     }
 
     @GetMapping(value = "/estado/{estadoId}")
-    public ResponseEntity<List<Cidade>> findByEstado(@PathVariable Integer estadoId) {
-        return ResponseEntity.ok().body(repository.findByEstadoId(estadoId));
+    public ResponseEntity<List<Cidade>> findByEstado(@PathVariable Integer estadoId){
+       return ResponseEntity.ok().body(cidadeService.findByEstado(estadoId));
     }
 }

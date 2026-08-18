@@ -1,7 +1,9 @@
 package com.pedrofranceschi.orderapi.controller;
 
 import com.pedrofranceschi.orderapi.entities.Estado;
-import com.pedrofranceschi.orderapi.repository.EstadoRepository;
+
+import com.pedrofranceschi.orderapi.services.EstadoService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,29 +14,23 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/estados")
-
+@AllArgsConstructor
 public class EstadoController {
 
-    private EstadoRepository estadoRepository;
-
-    public EstadoController(EstadoRepository estadoRepository) {
-        this.estadoRepository = estadoRepository;
-    }
+    private final EstadoService estadoService;
 
     @GetMapping
-    public ResponseEntity <List<Estado>> findAll() {
-        return ResponseEntity.ok().body(estadoRepository.findAll());
+    public ResponseEntity<List<Estado>> findAll() {
+        return ResponseEntity.ok().body(estadoService.findAll());
     }
-
     @GetMapping(value = "/{id}")
     public ResponseEntity<Estado> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(estadoRepository.findById(id).get());
+        return ResponseEntity.ok().body(estadoService.findById(id));
     }
 
-    @GetMapping(value = "/uf/{uf}")
-     public ResponseEntity<Estado> findByUf(@PathVariable String uf) {
-        return ResponseEntity.ok().body(estadoRepository.findByUf(uf));
+    @GetMapping(value = "/estado/{uf}")
+    public ResponseEntity<Estado> findByUf(@PathVariable String uf) {
+        return ResponseEntity.ok().body(estadoService.findByUf(uf));
     }
-
 
 }
