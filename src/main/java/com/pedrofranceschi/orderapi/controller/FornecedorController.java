@@ -1,5 +1,6 @@
 package com.pedrofranceschi.orderapi.controller;
 
+import com.pedrofranceschi.orderapi.dto.FornecedorResponseDTO;
 import com.pedrofranceschi.orderapi.entities.Estado;
 import com.pedrofranceschi.orderapi.entities.Fornecedor;
 import com.pedrofranceschi.orderapi.services.FornecedorService;
@@ -20,17 +21,17 @@ public class FornecedorController {
     private final FornecedorService fornecedorService;
 
     @GetMapping
-    public ResponseEntity<List<Fornecedor>> findAll() {
+    public ResponseEntity<List<FornecedorResponseDTO>> findAll() {
         return ResponseEntity.ok().body(fornecedorService.findAll());
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Fornecedor> findById(@PathVariable Long id) {
+    public ResponseEntity<FornecedorResponseDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(fornecedorService.findById(id));
     }
 
-    @GetMapping(value = "/fornecedor/{nome}")
-    public ResponseEntity<Fornecedor> findByUf(@PathVariable String nome) {
+    @GetMapping(value = "/nome/{nome}")
+    public ResponseEntity <List<FornecedorResponseDTO>> findByNome(@PathVariable String nome) {
         return ResponseEntity.ok().body(fornecedorService.findByNome(nome));
     }
 }

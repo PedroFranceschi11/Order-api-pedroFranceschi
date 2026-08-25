@@ -17,6 +17,7 @@ public class Cidade {
     @EqualsAndHashCode.Include
     private Long id;
 
+    @Column(length = 32,nullable = false)
     private String nome;
 
     @ManyToOne

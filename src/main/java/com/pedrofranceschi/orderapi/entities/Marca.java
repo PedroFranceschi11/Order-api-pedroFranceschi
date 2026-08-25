@@ -16,6 +16,7 @@ public class Marca{
     @EqualsAndHashCode.Include
     private Long id;
 
+    @Column(name = "nome",nullable = false)
     private String nome;
 
 }

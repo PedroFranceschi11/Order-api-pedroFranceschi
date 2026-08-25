@@ -1,5 +1,6 @@
 package com.pedrofranceschi.orderapi.controller;
 
+import com.pedrofranceschi.orderapi.dto.ClienteResponseDTO;
 import com.pedrofranceschi.orderapi.entities.Cliente;
 import com.pedrofranceschi.orderapi.entities.Estado;
 import com.pedrofranceschi.orderapi.services.ClienteService;
@@ -20,17 +21,13 @@ public class ClienteController {
     private final ClienteService clienteService;
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> findAll() {
+    public ResponseEntity<List<ClienteResponseDTO>> findAll() {
         return ResponseEntity.ok().body(clienteService.findAll());
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Cliente> findById(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ClienteResponseDTO> findByiD(@PathVariable Long id) {
         return ResponseEntity.ok().body(clienteService.findById(id));
     }
 
-    @GetMapping(value = "/clientes/{nome}")
-    public ResponseEntity<Cliente> findByNome(@PathVariable String nome) {
-        return ResponseEntity.ok().body(clienteService.findByNome(nome));
-    }
 }

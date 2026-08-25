@@ -1,5 +1,6 @@
 package com.pedrofranceschi.orderapi.controller;
 
+import com.pedrofranceschi.orderapi.dto.CidadeResponseDTO;
 import com.pedrofranceschi.orderapi.entities.Cidade;
 import com.pedrofranceschi.orderapi.repository.CidadeRepository;
 import com.pedrofranceschi.orderapi.services.CidadeService;
@@ -20,17 +21,17 @@ public class CidadeController {
    private final CidadeService cidadeService;
 
    @GetMapping
-    public ResponseEntity<List<Cidade>> findAll() {
+    public ResponseEntity<List<CidadeResponseDTO>> findAll() {
        return ResponseEntity.ok().body(cidadeService.findAll());
    }
 
    @GetMapping(value = "/{id}")
-    public ResponseEntity<Cidade> findById(@PathVariable Long id) {
+    public ResponseEntity<CidadeResponseDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(cidadeService.findById(id));
     }
 
     @GetMapping(value = "/estado/{estadoId}")
-    public ResponseEntity<List<Cidade>> findByEstado(@PathVariable Long estadoId){
+    public ResponseEntity<List<CidadeResponseDTO>> findByEstado(@PathVariable Long estadoId){
        return ResponseEntity.ok().body(cidadeService.findByEstado(estadoId));
     }
 }

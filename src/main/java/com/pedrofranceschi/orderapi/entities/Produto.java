@@ -20,10 +20,13 @@ public class Produto{
     @EqualsAndHashCode.Include
     private Long id;
 
+    @Column(name = "nome", nullable = false)
     private String nome;
 
+    @Column(name = "descricao", nullable = false)
     private String descricao;
 
+    @Column(name = "preco", nullable = false)
     private Double preco;
 
     @ManyToOne
