@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "produto")
 @Entity
 @AllArgsConstructor
@@ -17,7 +17,6 @@ public class Produto{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
     private Long id;
 
     @Column(name = "nome", nullable = false)
@@ -36,4 +35,14 @@ public class Produto{
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Produto produto = (Produto) o;
+        return Objects.equals(id, produto.id);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

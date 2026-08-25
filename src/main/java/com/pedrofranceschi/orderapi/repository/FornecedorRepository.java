@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface FornecedorRepository extends JpaRepository<Fornecedor, Long> {
 
-    List<Fornecedor> findByNome(String nome);
+    List<Fornecedor> findByNomeContainingIgnoreCase (String nome);
 
 }
 

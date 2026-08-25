@@ -36,6 +36,6 @@ public class FornecedorService {
     }
 
     public List<FornecedorResponseDTO> findByNome(String nome) {
-        return fornecedorRepository.findByNome(nome).stream().map(FornecedorResponseDTO::new).toList();
+        return fornecedorRepository.findByNomeContainingIgnoreCase(nome).stream().map(FornecedorResponseDTO::new).toList();
     }
 }
