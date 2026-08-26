@@ -14,6 +14,7 @@ import java.util.Objects;
 public class Marca{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @Column(name = "nome",nullable = false)

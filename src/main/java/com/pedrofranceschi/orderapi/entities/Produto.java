@@ -17,6 +17,7 @@ public class Produto{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @Column(name = "nome", nullable = false)

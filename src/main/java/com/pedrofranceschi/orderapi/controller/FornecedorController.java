@@ -1,15 +1,15 @@
 package com.pedrofranceschi.orderapi.controller;
 
+import com.pedrofranceschi.orderapi.dto.FornecedorRequestDTO;
 import com.pedrofranceschi.orderapi.dto.FornecedorResponseDTO;
 import com.pedrofranceschi.orderapi.entities.Estado;
 import com.pedrofranceschi.orderapi.entities.Fornecedor;
 import com.pedrofranceschi.orderapi.services.FornecedorService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,5 +33,11 @@ public class FornecedorController {
     @GetMapping(value = "/nome/{nome}")
     public ResponseEntity <List<FornecedorResponseDTO>> findByNome(@PathVariable String nome) {
         return ResponseEntity.ok().body(fornecedorService.findByNome(nome));
+    }
+
+    @PostMapping
+    public ResponseEntity<FornecedorResponseDTO> insert(@RequestBody @Valid FornecedorRequestDTO fornecedor) {
+        FornecedorResponseDTO response = fornecedorService.insert(fornecedor);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
