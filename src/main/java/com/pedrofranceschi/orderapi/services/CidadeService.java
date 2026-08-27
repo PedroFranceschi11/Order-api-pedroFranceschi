@@ -22,12 +22,7 @@ public class CidadeService {
     public CidadeResponseDTO findById(Long Id) {
         Cidade cidade = cidadeRepository.findById(Id)
                 .orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
-        return  new CidadeResponseDTO(
-                cidade.getId(),
-                cidade.getNome(),
-                new EstadoResponseDTO(cidade.getEstado())
-
-        );
+        return  new CidadeResponseDTO(cidade);
     }
 
     public List<CidadeResponseDTO> findByEstado(Long estadoId) {

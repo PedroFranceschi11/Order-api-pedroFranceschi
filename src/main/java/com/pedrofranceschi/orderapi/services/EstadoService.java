@@ -29,11 +29,7 @@ public class EstadoService {
     public EstadoResponseDTO findById(Long id) {
         Estado estado = estadoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Estado não encontrado"));
-        return new EstadoResponseDTO(
-                estado.getId(),
-                estado.getNome(),
-                estado.getUf()
-        );
+        return new EstadoResponseDTO(estado);
     }
 
     public EstadoResponseDTO findByUf(String uf) {

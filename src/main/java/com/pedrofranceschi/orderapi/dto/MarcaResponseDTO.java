@@ -15,8 +15,8 @@ public class MarcaResponseDTO {
 
     private String nome;
 
-    public MarcaResponseDTO(Marca entity) {
-        this.id = entity.getId();
-        this.nome = entity.getNome();
+    public MarcaResponseDTO(Marca marca) {
+        this.id = marca.getId();
+        this.nome = marca.getNome();
     }
 }

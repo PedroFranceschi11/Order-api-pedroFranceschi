@@ -22,13 +22,7 @@ public class ClienteService {
     public ClienteResponseDTO findById(Long id) {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
-        return new ClienteResponseDTO(
-                cliente.getId(),
-                cliente.getNome(),
-                cliente.getCNPJ(),
-                cliente.getContato(),
-                new CidadeResponseDTO(cliente.getCidade())
-        );
+        return new ClienteResponseDTO(cliente);
     }
 
         public List<ClienteResponseDTO> findAll() {

@@ -31,13 +31,7 @@ public class FornecedorService {
     public FornecedorResponseDTO findById(Long Id) {
         Fornecedor fornecedor = fornecedorRepository.findById(Id)
                 .orElseThrow(() -> new RuntimeException("Fornecedor não encontrado"));
-        return new FornecedorResponseDTO(
-                fornecedor.getId(),
-                fornecedor.getNome(),
-                fornecedor.getCNPJ(),
-                fornecedor.getContato(),
-                new CidadeResponseDTO(fornecedor.getCidade())
-        );
+        return new FornecedorResponseDTO(fornecedor);
     }
 
     public List<FornecedorResponseDTO> findByNome(String nome) {

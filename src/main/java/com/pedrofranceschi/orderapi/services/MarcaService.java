@@ -27,10 +27,7 @@ public class MarcaService {
     public MarcaResponseDTO findById(Long id) {
         Marca marca = marcaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Marca não encontrada"));
-        return new MarcaResponseDTO(
-                marca.getId(),
-                marca.getNome()
-        );
+        return new MarcaResponseDTO(marca);
     }
 
     public List<MarcaResponseDTO> findByNome(String nome) {
