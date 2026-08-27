@@ -1,9 +1,9 @@
 package com.pedrofranceschi.orderapi.services;
 
 import com.pedrofranceschi.orderapi.dto.CidadeResponseDTO;
-import com.pedrofranceschi.orderapi.dto.EstadoResponseDTO;
 import com.pedrofranceschi.orderapi.entities.Cidade;
-import com.pedrofranceschi.orderapi.repository.CidadeRepository;
+import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundHandler;
+import com.pedrofranceschi.orderapi.repositories.CidadeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class CidadeService {
 
     public CidadeResponseDTO findById(Long Id) {
         Cidade cidade = cidadeRepository.findById(Id)
-                .orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundHandler("Cidade não encontrada com o id: " + Id));
         return  new CidadeResponseDTO(cidade);
     }
 

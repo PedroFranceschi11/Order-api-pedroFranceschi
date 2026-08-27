@@ -3,8 +3,9 @@ package com.pedrofranceschi.orderapi.services;
 import com.pedrofranceschi.orderapi.dto.*;
 import com.pedrofranceschi.orderapi.entities.Cidade;
 import com.pedrofranceschi.orderapi.entities.Cliente;
-import com.pedrofranceschi.orderapi.repository.CidadeRepository;
-import com.pedrofranceschi.orderapi.repository.ClienteRepository;
+import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundHandler;
+import com.pedrofranceschi.orderapi.repositories.CidadeRepository;
+import com.pedrofranceschi.orderapi.repositories.ClienteRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class ClienteService {
 
     public ClienteResponseDTO findById(Long id) {
         Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundHandler("Cliente não encontrado com o Id: " + id));
         return new ClienteResponseDTO(cliente);
     }
 
@@ -39,7 +40,7 @@ public class ClienteService {
     @Transactional
     public ClienteResponseDTO insert(ClienteRequestDTO dto) {
         Cidade cidade = cidadeRepository.findById(dto.getCidadeID())
-                .orElseThrow(() -> new RuntimeException("Cidade não encontrada com o ID: " + dto.getCidadeID()));
+                .orElseThrow(() -> new ResourceNotFoundHandler("Cliente não encontrado com o ID:  " + dto.getCidadeID()));
         Cliente cliente = new Cliente();
         cliente.setNome(dto.getNome());
         cliente.setCidade(cidade);

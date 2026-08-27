@@ -1,13 +1,10 @@
 package com.pedrofranceschi.orderapi.services;
 
-import com.pedrofranceschi.orderapi.dto.CidadeResponseDTO;
-import com.pedrofranceschi.orderapi.dto.ClienteResponseDTO;
 import com.pedrofranceschi.orderapi.dto.EstadoResponseDTO;
-import com.pedrofranceschi.orderapi.entities.Cliente;
 import com.pedrofranceschi.orderapi.entities.Estado;
-import com.pedrofranceschi.orderapi.repository.EstadoRepository;
+import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundHandler;
+import com.pedrofranceschi.orderapi.repositories.EstadoRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +25,7 @@ public class EstadoService {
 
     public EstadoResponseDTO findById(Long id) {
         Estado estado = estadoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Estado não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundHandler("Estado não encontrado com o id: " + id));
         return new EstadoResponseDTO(estado);
     }
 

@@ -1,8 +1,6 @@
 package com.pedrofranceschi.orderapi.controller;
 
 import com.pedrofranceschi.orderapi.dto.CidadeResponseDTO;
-import com.pedrofranceschi.orderapi.entities.Cidade;
-import com.pedrofranceschi.orderapi.repository.CidadeRepository;
 import com.pedrofranceschi.orderapi.services.CidadeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

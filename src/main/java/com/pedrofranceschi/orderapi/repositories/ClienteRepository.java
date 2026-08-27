@@ -1,4 +1,4 @@
-package com.pedrofranceschi.orderapi.repository;
+package com.pedrofranceschi.orderapi.repositories;
 
 import com.pedrofranceschi.orderapi.entities.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;

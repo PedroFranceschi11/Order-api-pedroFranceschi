@@ -1,8 +1,5 @@
-package com.pedrofranceschi.orderapi.repository;
+package com.pedrofranceschi.orderapi.repositories;
 
-import com.pedrofranceschi.orderapi.entities.Cidade;
-import com.pedrofranceschi.orderapi.entities.Cliente;
-import com.pedrofranceschi.orderapi.entities.Estado;
 import com.pedrofranceschi.orderapi.entities.Fornecedor;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,11 +1,7 @@
 package com.pedrofranceschi.orderapi.controller;
 
-import com.pedrofranceschi.orderapi.dto.EstadoResponseDTO;
-
 import com.pedrofranceschi.orderapi.dto.MarcaRequestDTO;
 import com.pedrofranceschi.orderapi.dto.MarcaResponseDTO;
-import com.pedrofranceschi.orderapi.repository.MarcaRepository;
-import com.pedrofranceschi.orderapi.services.EstadoService;
 import com.pedrofranceschi.orderapi.services.MarcaService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

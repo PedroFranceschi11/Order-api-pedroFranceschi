@@ -2,10 +2,7 @@ package com.pedrofranceschi.orderapi.controller;
 
 import com.pedrofranceschi.orderapi.dto.ClienteRequestDTO;
 import com.pedrofranceschi.orderapi.dto.ClienteResponseDTO;
-import com.pedrofranceschi.orderapi.dto.FornecedorResponseDTO;
-import com.pedrofranceschi.orderapi.entities.Cliente;
-import com.pedrofranceschi.orderapi.entities.Estado;
-import com.pedrofranceschi.orderapi.repository.ClienteRepository;
+import com.pedrofranceschi.orderapi.repositories.ClienteRepository;
 import com.pedrofranceschi.orderapi.services.ClienteService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -31,6 +28,7 @@ public class ClienteController {
     @GetMapping("/{id}")
     public ResponseEntity<ClienteResponseDTO> findByiD(@PathVariable Long id) {
         return ResponseEntity.ok().body(clienteService.findById(id));
+
     }
     @GetMapping(value = "/nome/{nome}")
     public ResponseEntity <List<ClienteResponseDTO>> findByNome(@PathVariable String nome) {

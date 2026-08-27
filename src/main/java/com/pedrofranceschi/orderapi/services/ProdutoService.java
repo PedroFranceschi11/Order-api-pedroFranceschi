@@ -1,13 +1,13 @@
 package com.pedrofranceschi.orderapi.services;
 
-import com.pedrofranceschi.orderapi.dto.MarcaResponseDTO;
 import com.pedrofranceschi.orderapi.dto.ProdutoRequestDTO;
 import com.pedrofranceschi.orderapi.dto.ProdutoResponseDTO;
 import com.pedrofranceschi.orderapi.entities.Marca;
 import com.pedrofranceschi.orderapi.entities.Produto;
 import com.pedrofranceschi.orderapi.entities.enums.Categoria;
-import com.pedrofranceschi.orderapi.repository.MarcaRepository;
-import com.pedrofranceschi.orderapi.repository.ProdutoRepository;
+import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundHandler;
+import com.pedrofranceschi.orderapi.repositories.MarcaRepository;
+import com.pedrofranceschi.orderapi.repositories.ProdutoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +29,7 @@ public class ProdutoService {
 
     public ProdutoResponseDTO findById(Long id) {
         Produto produto = produtoRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
+        .orElseThrow(() -> new ResourceNotFoundHandler("Produto não encontrado com o id: " +  id));
         return new ProdutoResponseDTO(produto);
     }
 
@@ -55,7 +55,7 @@ public class ProdutoService {
         produto.setCategoria(dto.getCategoria());
 
         Marca marca = marcaRepository.findById(dto.getMarcaID())
-                .orElseThrow(() -> new RuntimeException("Marca não encontrada com ID: " + dto.getMarcaID()));
+                .orElseThrow(() -> new ResourceNotFoundHandler("Marca não encontrada com ID: " + dto.getMarcaID()));
 
         produto.setMarca(marca);
 

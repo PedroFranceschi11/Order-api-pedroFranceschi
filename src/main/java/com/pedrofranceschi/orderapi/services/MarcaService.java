@@ -3,7 +3,8 @@ package com.pedrofranceschi.orderapi.services;
 import com.pedrofranceschi.orderapi.dto.MarcaRequestDTO;
 import com.pedrofranceschi.orderapi.dto.MarcaResponseDTO;
 import com.pedrofranceschi.orderapi.entities.Marca;
-import com.pedrofranceschi.orderapi.repository.MarcaRepository;
+import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundHandler;
+import com.pedrofranceschi.orderapi.repositories.MarcaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class MarcaService {
 
     public MarcaResponseDTO findById(Long id) {
         Marca marca = marcaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Marca não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundHandler("Marca não encontrada com o id: " + id));
         return new MarcaResponseDTO(marca);
     }
 

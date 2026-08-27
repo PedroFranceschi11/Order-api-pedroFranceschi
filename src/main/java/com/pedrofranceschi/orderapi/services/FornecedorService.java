@@ -1,14 +1,12 @@
 package com.pedrofranceschi.orderapi.services;
 
-import com.pedrofranceschi.orderapi.dto.CidadeResponseDTO;
 import com.pedrofranceschi.orderapi.dto.FornecedorRequestDTO;
 import com.pedrofranceschi.orderapi.dto.FornecedorResponseDTO;
 import com.pedrofranceschi.orderapi.entities.Cidade;
-import com.pedrofranceschi.orderapi.entities.Cliente;
 import com.pedrofranceschi.orderapi.entities.Fornecedor;
-import com.pedrofranceschi.orderapi.repository.CidadeRepository;
-import com.pedrofranceschi.orderapi.repository.ClienteRepository;
-import com.pedrofranceschi.orderapi.repository.FornecedorRepository;
+import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundHandler;
+import com.pedrofranceschi.orderapi.repositories.CidadeRepository;
+import com.pedrofranceschi.orderapi.repositories.FornecedorRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +28,7 @@ public class FornecedorService {
 
     public FornecedorResponseDTO findById(Long Id) {
         Fornecedor fornecedor = fornecedorRepository.findById(Id)
-                .orElseThrow(() -> new RuntimeException("Fornecedor não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundHandler("Fornecedor não encontrado com o id: " + Id));
         return new FornecedorResponseDTO(fornecedor);
     }
 
