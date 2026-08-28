@@ -21,10 +21,10 @@ public class ProdutoService {
     private final MarcaRepository marcaRepository;
 
     public List<ProdutoResponseDTO> findAll() {
-        return produtoRepository.findAll().
-                stream().
-                map(ProdutoResponseDTO::new).
-                toList();
+        return produtoRepository.findAll()
+                .stream()
+                .map(ProdutoResponseDTO::new)
+                .toList();
     }
 
     public ProdutoResponseDTO findById(Long id) {
@@ -34,17 +34,23 @@ public class ProdutoService {
     }
 
     public List<ProdutoResponseDTO> findByNome(String nome) {
-        return produtoRepository.findByNomeContainingIgnoreCase(nome).
-                stream().
-                map(ProdutoResponseDTO::new).
-                toList();
+        List<Produto> produtos = produtoRepository.findByNomeContainingIgnoreCase(nome);
+        if (produtos.isEmpty()){
+            throw new ResourceNotFoundHandler("Nenhum produto encontrado com o termo: " + nome);
+        }
+        return produtos.stream()
+                .map(ProdutoResponseDTO::new)
+                .toList();
     }
 
     public List<ProdutoResponseDTO> findByCategoria(Categoria categoria ){
-        return produtoRepository.findByCategoria(categoria).
-                stream().
-                map(ProdutoResponseDTO::new).
-                toList();
+        List<Produto> produtos = produtoRepository.findByCategoria(categoria);
+        if(produtos.isEmpty()) {
+            throw new ResourceNotFoundHandler("Nenhum produto encontrado com o termo: " + categoria);
+        }
+        return produtos.stream()
+                .map(ProdutoResponseDTO::new)
+                .toList();
     }
 
     public ProdutoResponseDTO insert (ProdutoRequestDTO dto) {

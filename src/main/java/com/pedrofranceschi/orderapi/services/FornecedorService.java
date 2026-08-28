@@ -1,7 +1,9 @@
 package com.pedrofranceschi.orderapi.services;
 
+import com.pedrofranceschi.orderapi.dto.CidadeResponseDTO;
 import com.pedrofranceschi.orderapi.dto.FornecedorRequestDTO;
 import com.pedrofranceschi.orderapi.dto.FornecedorResponseDTO;
+import com.pedrofranceschi.orderapi.dto.ProdutoResponseDTO;
 import com.pedrofranceschi.orderapi.entities.Cidade;
 import com.pedrofranceschi.orderapi.entities.Fornecedor;
 import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundHandler;
@@ -21,9 +23,11 @@ public class FornecedorService {
 
     private final CidadeRepository cidadeRepository;
 
-    public List<FornecedorResponseDTO> findAll() {
-                return fornecedorRepository.findAll().stream().map(FornecedorResponseDTO::new).toList();
-
+    public List<CidadeResponseDTO> findAll() {
+        return cidadeRepository.findAll()
+                .stream()
+                .map(CidadeResponseDTO::new)
+                .toList();
     }
 
     public FornecedorResponseDTO findById(Long Id) {
@@ -33,7 +37,14 @@ public class FornecedorService {
     }
 
     public List<FornecedorResponseDTO> findByNome(String nome) {
-        return fornecedorRepository.findByNomeContainingIgnoreCase(nome).stream().map(FornecedorResponseDTO::new).toList();
+        List<Fornecedor> fornecedores = fornecedorRepository.findByNomeContainingIgnoreCase(nome);
+        if(fornecedores.isEmpty()){
+            throw new ResourceNotFoundHandler("Fornecedor não encontrado com o termo: " + nome);
+        }
+        return fornecedores.
+                stream()
+                .map(FornecedorResponseDTO::new).
+                toList();
     }
 
     @Transactional

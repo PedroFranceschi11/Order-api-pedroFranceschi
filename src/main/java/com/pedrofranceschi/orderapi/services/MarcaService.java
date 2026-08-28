@@ -2,8 +2,10 @@ package com.pedrofranceschi.orderapi.services;
 
 import com.pedrofranceschi.orderapi.dto.MarcaRequestDTO;
 import com.pedrofranceschi.orderapi.dto.MarcaResponseDTO;
+import com.pedrofranceschi.orderapi.dto.ProdutoResponseDTO;
 import com.pedrofranceschi.orderapi.entities.Marca;
 import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundHandler;
+import com.pedrofranceschi.orderapi.infra.RestExceptionHandler;
 import com.pedrofranceschi.orderapi.repositories.MarcaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,6 @@ public class MarcaService {
 
 
     public List<MarcaResponseDTO> findAll() {
-
         return marcaRepository.findAll()
                 .stream()
                 .map(MarcaResponseDTO::new)
@@ -32,7 +33,14 @@ public class MarcaService {
     }
 
     public List<MarcaResponseDTO> findByNome(String nome) {
-        return marcaRepository.findByNomeContainingIgnoreCase(nome).stream().map(MarcaResponseDTO::new).toList();
+        List<Marca> marcas = marcaRepository.findByNomeContainingIgnoreCase(nome);
+        if(marcas.isEmpty()){
+            throw new ResourceNotFoundHandler("Marca não encontrada com o termo: " + nome);
+        }
+        return marcas.
+                stream().
+                map(MarcaResponseDTO::new).
+                toList();
     }
 
     public MarcaResponseDTO insert (MarcaRequestDTO dto) {

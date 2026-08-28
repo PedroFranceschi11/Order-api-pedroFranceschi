@@ -1,6 +1,7 @@
 package com.pedrofranceschi.orderapi.services;
 
 import com.pedrofranceschi.orderapi.dto.EstadoResponseDTO;
+import com.pedrofranceschi.orderapi.dto.ProdutoResponseDTO;
 import com.pedrofranceschi.orderapi.entities.Estado;
 import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundHandler;
 import com.pedrofranceschi.orderapi.repositories.EstadoRepository;
@@ -16,7 +17,6 @@ public class EstadoService {
     private final EstadoRepository estadoRepository;
 
     public List<EstadoResponseDTO> findAll() {
-
         return estadoRepository.findAll()
                 .stream()
                 .map(EstadoResponseDTO::new)
@@ -29,8 +29,12 @@ public class EstadoService {
         return new EstadoResponseDTO(estado);
     }
 
-    public EstadoResponseDTO findByUf(String uf) {
-        Estado estado = estadoRepository.findByUf(uf);
-                return new EstadoResponseDTO(estado);
+    public List<EstadoResponseDTO> findByNome (String nome){
+        List<Estado> estados = estadoRepository.findByNomeContainingIgnoreCase(nome);
+        if(estados.isEmpty()){
+            throw new ResourceNotFoundHandler("Estado não encontado com o termo: " + nome);
+        }
+        return estados.stream().map(EstadoResponseDTO::new).toList();
     }
+
 }

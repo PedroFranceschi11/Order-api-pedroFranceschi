@@ -1,6 +1,7 @@
 package com.pedrofranceschi.orderapi.services;
 
 import com.pedrofranceschi.orderapi.dto.CidadeResponseDTO;
+import com.pedrofranceschi.orderapi.dto.ProdutoResponseDTO;
 import com.pedrofranceschi.orderapi.entities.Cidade;
 import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundHandler;
 import com.pedrofranceschi.orderapi.repositories.CidadeRepository;
@@ -16,7 +17,10 @@ public class CidadeService {
     private final CidadeRepository cidadeRepository;
 
     public List<CidadeResponseDTO> findAll() {
-        return cidadeRepository.findAll().stream().map(CidadeResponseDTO::new).toList();
+        return cidadeRepository.findAll()
+                .stream()
+                .map(CidadeResponseDTO::new)
+                .toList();
     }
 
     public CidadeResponseDTO findById(Long Id) {
@@ -26,8 +30,10 @@ public class CidadeService {
     }
 
     public List<CidadeResponseDTO> findByEstado(Long estadoId) {
-        return cidadeRepository.findByEstadoId(estadoId).stream().map(CidadeResponseDTO::new).toList();
+        List<Cidade> cidades = cidadeRepository.findByEstadoId(estadoId);
+        if(cidades.isEmpty()){
+            throw new ResourceNotFoundHandler("Estado não encontrado com o Estado Id: " + estadoId);
+        }
+        return cidades.stream().map(CidadeResponseDTO::new).toList();
     }
-
-
 }

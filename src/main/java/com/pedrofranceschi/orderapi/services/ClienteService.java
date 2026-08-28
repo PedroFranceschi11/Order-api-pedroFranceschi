@@ -26,15 +26,20 @@ public class ClienteService {
         return new ClienteResponseDTO(cliente);
     }
 
-        public List<ClienteResponseDTO> findAll() {
-            return clienteRepository.findAll()
-                    .stream()
-                    .map(ClienteResponseDTO::new)
-                    .toList();
+            public List<ClienteResponseDTO> findAll() {
+                return clienteRepository.findAll()
+                        .stream()
+                        .map(ClienteResponseDTO::new)
+                        .toList();
     }
 
     public List<ClienteResponseDTO> findByNome(String nome) {
-        return clienteRepository.findByNomeContainingIgnoreCase(nome).stream().map(ClienteResponseDTO::new).toList();
+        List<Cliente> clientes = clienteRepository.findByNomeContainingIgnoreCase(nome);
+        if(clientes.isEmpty()){
+            throw new ResourceNotFoundHandler("Cliente não encontrado com o termo: " + nome);
+        }
+        return clientes.stream().map(ClienteResponseDTO::new).toList();
+
     }
 
     @Transactional

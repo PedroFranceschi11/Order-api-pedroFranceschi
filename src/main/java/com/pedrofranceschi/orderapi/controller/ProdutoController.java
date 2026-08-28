@@ -38,7 +38,6 @@ public class ProdutoController {
     @GetMapping(value = "/categoria/{categoria}")
     public ResponseEntity<List<ProdutoResponseDTO>> findByCategoria(@PathVariable String categoria) {
         Categoria categoriaEnum = Categoria.valueOf(categoria.toUpperCase());
-
         List<ProdutoResponseDTO> list = produtoService.findByCategoria(categoriaEnum);
         return ResponseEntity.ok(list);
     }

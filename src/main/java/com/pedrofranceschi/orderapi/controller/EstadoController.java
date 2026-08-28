@@ -31,9 +31,9 @@ public class EstadoController {
         return ResponseEntity.ok().body(estadoService.findById(id));
     }
 
-    @GetMapping(value = "/uf/{uf}")
-    public ResponseEntity<EstadoResponseDTO> findByUf(@PathVariable String uf){
-        return ResponseEntity.ok().body(estadoService.findByUf(uf));
+    @GetMapping(value = "/nome/{nome}")
+    public ResponseEntity<List<EstadoResponseDTO>> findByNome(@PathVariable String nome) {
+        return ResponseEntity.ok().body(estadoService.findByNome(nome));
     }
 
 }
