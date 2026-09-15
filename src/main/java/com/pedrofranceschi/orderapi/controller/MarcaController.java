@@ -2,6 +2,7 @@ package com.pedrofranceschi.orderapi.controller;
 
 import com.pedrofranceschi.orderapi.dto.MarcaRequestDTO;
 import com.pedrofranceschi.orderapi.dto.MarcaResponseDTO;
+import com.pedrofranceschi.orderapi.entities.Marca;
 import com.pedrofranceschi.orderapi.services.MarcaService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class MarcaController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<MarcaResponseDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<Marca> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(marcaService.findById(id));
     }
 

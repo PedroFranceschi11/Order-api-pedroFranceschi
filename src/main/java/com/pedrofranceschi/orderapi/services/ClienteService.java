@@ -19,6 +19,7 @@ public class ClienteService {
     private final ClienteRepository clienteRepository;
 
     private final CidadeRepository cidadeRepository;
+    private final CidadeService cidadeService;
 
     public ClienteResponseDTO findById(Long id) {
         Cliente cliente = clienteRepository.findById(id)
@@ -44,16 +45,24 @@ public class ClienteService {
 
     @Transactional
     public ClienteResponseDTO insert(ClienteRequestDTO dto) {
-        Cidade cidade = cidadeRepository.findById(dto.getCidadeID())
-                .orElseThrow(() -> new ResourceNotFoundHandler("Cliente não encontrado com o ID:  " + dto.getCidadeID()));
+        Cliente novoCliente = toEntity(dto);
+        novoCliente = clienteRepository.save(novoCliente);
+        return toClienteDTO(novoCliente);
+    }
+
+    private Cliente toEntity(ClienteRequestDTO clienteRequestDTO) {
         Cliente cliente = new Cliente();
-        cliente.setNome(dto.getNome());
-        cliente.setCidade(cidade);
-        cliente.setCNPJ(dto.getCNPJ());
-        cliente.setContato(dto.getContato());
+        cliente.setNome(clienteRequestDTO.getNome());
+        cliente.setCidade(cidadeService.findById(clienteRequestDTO.getCidadeID()));
+        cliente.setCNPJ(clienteRequestDTO.getCNPJ());
+        cliente.setContato(clienteRequestDTO.getContato());
 
-        cliente = clienteRepository.save(cliente);
+        return cliente;
+    }
 
+    private ClienteResponseDTO toClienteDTO(Cliente cliente) {
         return new ClienteResponseDTO(cliente);
     }
+
+
 }

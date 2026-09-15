@@ -23,10 +23,10 @@ public class CidadeService {
                 .toList();
     }
 
-    public CidadeResponseDTO findById(Long Id) {
-        Cidade cidade = cidadeRepository.findById(Id)
+    public Cidade findById(Long Id) {
+        return cidadeRepository.findById(Id)
                 .orElseThrow(() -> new ResourceNotFoundHandler("Cidade não encontrada com o id: " + Id));
-        return  new CidadeResponseDTO(cidade);
+
     }
 
     public List<CidadeResponseDTO> findByEstado(Long estadoId) {

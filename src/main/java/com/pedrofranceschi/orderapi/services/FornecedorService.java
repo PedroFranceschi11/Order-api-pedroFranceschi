@@ -22,13 +22,15 @@ public class FornecedorService {
     private final FornecedorRepository fornecedorRepository;
 
     private final CidadeRepository cidadeRepository;
+    private final CidadeService cidadeService;
 
-    public List<CidadeResponseDTO> findAll() {
-        return cidadeRepository.findAll()
+    public List<FornecedorResponseDTO> findAll() {
+        return fornecedorRepository.findAll()
                 .stream()
-                .map(CidadeResponseDTO::new)
+                .map(FornecedorResponseDTO::new)
                 .toList();
     }
+
 
     public FornecedorResponseDTO findById(Long Id) {
         Fornecedor fornecedor = fornecedorRepository.findById(Id)
@@ -49,15 +51,21 @@ public class FornecedorService {
 
     @Transactional
     public FornecedorResponseDTO insert(FornecedorRequestDTO dto) {
-        Cidade cidade = cidadeRepository.findById(dto.getCidadeID())
-                .orElseThrow(() -> new RuntimeException("Cidade Não encontrada com o ID: " + dto.getCidadeID()));
-        Fornecedor fornecedor = new Fornecedor();
-        fornecedor.setNome(dto.getNome());
-        fornecedor.setCNPJ(dto.getCNPJ());
-        fornecedor.setContato(dto.getContato());
-        fornecedor.setCidade(cidade);
+       Fornecedor novoFornecedor = toEntity(dto);
+       novoFornecedor = fornecedorRepository.save(novoFornecedor);
+       return toFornecedorDTO(novoFornecedor);
+    }
 
-        fornecedor = fornecedorRepository.save(fornecedor);
+    private Fornecedor toEntity(FornecedorRequestDTO fornecedorRequestDTO) {
+        Fornecedor fornecedor = new Fornecedor();
+        fornecedor.setNome(fornecedorRequestDTO.getNome());
+        fornecedor.setCNPJ(fornecedorRequestDTO.getCNPJ());
+        fornecedor.setContato(fornecedorRequestDTO.getContato());
+        fornecedor.setCidade(cidadeService.findById(fornecedorRequestDTO.getCidadeID()));
+        return fornecedor;
+    }
+
+    private FornecedorResponseDTO toFornecedorDTO(Fornecedor fornecedor) {
         return new FornecedorResponseDTO(fornecedor);
     }
 }

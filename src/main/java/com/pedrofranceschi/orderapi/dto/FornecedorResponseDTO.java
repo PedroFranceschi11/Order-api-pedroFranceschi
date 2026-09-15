@@ -4,12 +4,14 @@ import com.pedrofranceschi.orderapi.entities.Cliente;
 import com.pedrofranceschi.orderapi.entities.Fornecedor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 public class FornecedorResponseDTO {
 
     private Long id;

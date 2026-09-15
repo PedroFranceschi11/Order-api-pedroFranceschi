@@ -8,6 +8,7 @@ import com.pedrofranceschi.orderapi.entities.enums.Categoria;
 import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundHandler;
 import com.pedrofranceschi.orderapi.repositories.MarcaRepository;
 import com.pedrofranceschi.orderapi.repositories.ProdutoRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
     private final MarcaRepository marcaRepository;
+    private final MarcaService marcaService;
 
     public List<ProdutoResponseDTO> findAll() {
         return produtoRepository.findAll()
@@ -53,19 +55,25 @@ public class ProdutoService {
                 .toList();
     }
 
+    @Transactional
     public ProdutoResponseDTO insert (ProdutoRequestDTO dto) {
+        Produto novoProduto = toEntity(dto);
+        novoProduto = produtoRepository.save(novoProduto);
+        return toProdutoDTO(novoProduto);
+    }
+
+    private Produto toEntity(ProdutoRequestDTO produtoRequestDTO) {
         Produto produto = new Produto();
-        produto.setNome(dto.getNome());
-        produto.setDescricao(dto.getDescricao());
-        produto.setPreco(dto.getPreco());
-        produto.setCategoria(dto.getCategoria());
+        produto.setNome(produtoRequestDTO.getNome());
+        produto.setDescricao(produtoRequestDTO.getDescricao());
+        produto.setPreco(produtoRequestDTO.getPreco());
+        produto.setMarca(marcaService.findById(produtoRequestDTO.getMarcaID()));
+        produto.setCategoria(produtoRequestDTO.getCategoria());
 
-        Marca marca = marcaRepository.findById(dto.getMarcaID())
-                .orElseThrow(() -> new ResourceNotFoundHandler("Marca não encontrada com ID: " + dto.getMarcaID()));
+        return produto;
+    }
 
-        produto.setMarca(marca);
-
-        produto = produtoRepository.save(produto);
+    private ProdutoResponseDTO toProdutoDTO(Produto produto) {
         return new ProdutoResponseDTO(produto);
     }
 }

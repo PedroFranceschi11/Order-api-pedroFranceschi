@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Objects;
+import java.util.Optional;
 
 
 @Getter @Setter
@@ -41,4 +42,5 @@ public class Fornecedor {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
 }

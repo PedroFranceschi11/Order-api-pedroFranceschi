@@ -26,8 +26,5 @@ public class Marca{
         Marca marca = (Marca) o;
         return Objects.equals(id, marca.id);
     }
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
+
 }

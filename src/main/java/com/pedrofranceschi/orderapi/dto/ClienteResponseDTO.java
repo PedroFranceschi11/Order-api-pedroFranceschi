@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 public class ClienteResponseDTO {
 
     private Long id;
