@@ -2,10 +2,12 @@ package com.pedrofranceschi.orderapi.controller;
 
 import com.pedrofranceschi.orderapi.dto.ProdutoRequestDTO;
 import com.pedrofranceschi.orderapi.dto.ProdutoResponseDTO;
+import com.pedrofranceschi.orderapi.entities.Produto;
 import com.pedrofranceschi.orderapi.entities.enums.Categoria;
 import com.pedrofranceschi.orderapi.services.ProdutoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -46,5 +48,16 @@ public class ProdutoController {
     public ResponseEntity<ProdutoResponseDTO> insert(@Valid @RequestBody ProdutoRequestDTO dto) {
         ProdutoResponseDTO response = produtoService.insert(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ProdutoResponseDTO> update(@RequestBody @Valid ProdutoRequestDTO produto, @PathVariable Long id) {
+        return ResponseEntity.ok().body(produtoService.update(produto, id));
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Produto> delete(@PathVariable Long id) {
+        produtoService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

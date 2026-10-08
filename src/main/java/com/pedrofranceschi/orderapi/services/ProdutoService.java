@@ -64,16 +64,33 @@ public class ProdutoService {
 
     private Produto toEntity(ProdutoRequestDTO produtoRequestDTO) {
         Produto produto = new Produto();
-        produto.setNome(produtoRequestDTO.getNome());
-        produto.setDescricao(produtoRequestDTO.getDescricao());
-        produto.setPreco(produtoRequestDTO.getPreco());
-        produto.setMarca(marcaService.findById(produtoRequestDTO.getMarcaID()));
-        produto.setCategoria(produtoRequestDTO.getCategoria());
-
+        copyDtoToEntity(produtoRequestDTO, produto);
         return produto;
     }
 
     private ProdutoResponseDTO toProdutoDTO(Produto produto) {
         return new ProdutoResponseDTO(produto);
+    }
+
+    @Transactional
+    public ProdutoResponseDTO update(ProdutoRequestDTO dto, Long id) {
+        Produto produto = produtoRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundHandler("Produto não encontrado com o id: " + id));
+        copyDtoToEntity(dto, produto);
+        return toProdutoDTO(produto);
+    }
+
+    private void copyDtoToEntity(ProdutoRequestDTO produtoRequestDTO, Produto produto) {
+        produto.setNome(produtoRequestDTO.getNome());
+        produto.setCategoria(produtoRequestDTO.getCategoria());
+        produto.setMarca(marcaService.findById(produtoRequestDTO.getMarcaID()));
+        produto.setPreco(produtoRequestDTO.getPreco());
+        produto.setDescricao(produtoRequestDTO.getDescricao());
+    }
+    @Transactional
+    public void delete(Long id) {
+        Produto produto = produtoRepository.findById(id).
+                orElseThrow(()-> new ResourceNotFoundHandler("Produto não encontrado com o id: " + id));
+        produtoRepository.delete(produto);
     }
 }

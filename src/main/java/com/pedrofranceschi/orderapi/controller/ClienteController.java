@@ -2,6 +2,7 @@ package com.pedrofranceschi.orderapi.controller;
 
 import com.pedrofranceschi.orderapi.dto.ClienteRequestDTO;
 import com.pedrofranceschi.orderapi.dto.ClienteResponseDTO;
+import com.pedrofranceschi.orderapi.entities.Cliente;
 import com.pedrofranceschi.orderapi.repositories.ClienteRepository;
 import com.pedrofranceschi.orderapi.services.ClienteService;
 import jakarta.validation.Valid;
@@ -41,4 +42,14 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Cliente> delete(@PathVariable Long id) {
+        clienteService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClienteResponseDTO> update(@RequestBody @Valid ClienteRequestDTO cliente, @PathVariable  Long id) {
+        return ResponseEntity.ok().body(clienteService.update(cliente, id));
+    }
 }

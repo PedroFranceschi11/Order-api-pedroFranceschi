@@ -40,4 +40,15 @@ public class FornecedorController {
         FornecedorResponseDTO response = fornecedorService.insert(fornecedor);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<FornecedorResponseDTO> update(@RequestBody @Valid FornecedorRequestDTO fornecedor, @PathVariable  Long id){
+        return ResponseEntity.ok().body(fornecedorService.update(fornecedor, id));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Fornecedor> delete(@PathVariable Long id) {
+        fornecedorService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

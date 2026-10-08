@@ -9,6 +9,7 @@ import com.pedrofranceschi.orderapi.repositories.ClienteRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 
@@ -63,6 +64,32 @@ public class ClienteService {
     private ClienteResponseDTO toClienteDTO(Cliente cliente) {
         return new ClienteResponseDTO(cliente);
     }
+
+    @Transactional
+    public void delete(Long id) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundHandler("Cliente não encontrado com o id: " + id));
+        clienteRepository.delete(cliente);
+    }
+
+    @Transactional
+    public ClienteResponseDTO update (ClienteRequestDTO clienteRequestDTO, Long id) {
+        Cliente cliente = clienteRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundHandler("Cliente não encontrado com o id: " + id));
+        copyDtoToEntity(clienteRequestDTO, cliente);
+        cliente = clienteRepository.save(cliente);
+
+        return toClienteDTO(cliente);
+
+    }
+
+    public void copyDtoToEntity(ClienteRequestDTO clienteRequestDTO, Cliente cliente ) {
+        cliente.setNome(clienteRequestDTO.getNome());
+        cliente.setCNPJ(clienteRequestDTO.getCNPJ());
+        cliente.setContato(clienteRequestDTO.getContato());
+        cliente.setCidade(cidadeService.findById(clienteRequestDTO.getCidadeID()));
+    }
+
 
 
 }

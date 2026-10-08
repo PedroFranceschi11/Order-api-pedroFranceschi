@@ -58,14 +58,33 @@ public class FornecedorService {
 
     private Fornecedor toEntity(FornecedorRequestDTO fornecedorRequestDTO) {
         Fornecedor fornecedor = new Fornecedor();
-        fornecedor.setNome(fornecedorRequestDTO.getNome());
         fornecedor.setCNPJ(fornecedorRequestDTO.getCNPJ());
-        fornecedor.setContato(fornecedorRequestDTO.getContato());
-        fornecedor.setCidade(cidadeService.findById(fornecedorRequestDTO.getCidadeID()));
+        copyDtoToEntity(fornecedorRequestDTO, fornecedor);
         return fornecedor;
     }
 
     private FornecedorResponseDTO toFornecedorDTO(Fornecedor fornecedor) {
         return new FornecedorResponseDTO(fornecedor);
+    }
+
+    @Transactional
+    public FornecedorResponseDTO update(FornecedorRequestDTO dto, Long id) {
+        Fornecedor fornecedor = fornecedorRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundHandler("Fornecedor não encontrado com o id: " + id));
+        copyDtoToEntity(dto, fornecedor);
+        return toFornecedorDTO(fornecedor);
+    }
+
+    private void copyDtoToEntity(FornecedorRequestDTO fornecedorRequestDTO, Fornecedor fornecedor) {
+        fornecedor.setNome(fornecedorRequestDTO.getNome());
+        fornecedor.setContato(fornecedorRequestDTO.getContato());
+        fornecedor.setCidade(cidadeService.findById(fornecedorRequestDTO.getCidadeID()));
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Fornecedor fornecedor = fornecedorRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundHandler("Fornecedor não encontrado com o id: " + id));
+        fornecedorRepository.delete(fornecedor);
     }
 }
