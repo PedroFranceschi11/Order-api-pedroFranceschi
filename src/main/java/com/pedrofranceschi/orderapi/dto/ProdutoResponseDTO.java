@@ -3,6 +3,7 @@ package com.pedrofranceschi.orderapi.dto;
 import com.pedrofranceschi.orderapi.entities.Marca;
 import com.pedrofranceschi.orderapi.entities.Produto;
 import com.pedrofranceschi.orderapi.entities.enums.Categoria;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class ProdutoResponseDTO {
 
     private Long id;
 
+    @NotBlank
     private String nome;
 
     private String descricao;

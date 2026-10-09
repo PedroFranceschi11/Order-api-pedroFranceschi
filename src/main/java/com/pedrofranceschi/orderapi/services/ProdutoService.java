@@ -2,10 +2,9 @@ package com.pedrofranceschi.orderapi.services;
 
 import com.pedrofranceschi.orderapi.dto.ProdutoRequestDTO;
 import com.pedrofranceschi.orderapi.dto.ProdutoResponseDTO;
-import com.pedrofranceschi.orderapi.entities.Marca;
 import com.pedrofranceschi.orderapi.entities.Produto;
 import com.pedrofranceschi.orderapi.entities.enums.Categoria;
-import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundHandler;
+import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundException;
 import com.pedrofranceschi.orderapi.repositories.MarcaRepository;
 import com.pedrofranceschi.orderapi.repositories.ProdutoRepository;
 import jakarta.transaction.Transactional;
@@ -22,6 +21,11 @@ public class ProdutoService {
     private final MarcaRepository marcaRepository;
     private final MarcaService marcaService;
 
+    private Produto returnId(Long id) {
+        return produtoRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado com o id: " + id));
+    }
+
     public List<ProdutoResponseDTO> findAll() {
         return produtoRepository.findAll()
                 .stream()
@@ -31,14 +35,14 @@ public class ProdutoService {
 
     public ProdutoResponseDTO findById(Long id) {
         Produto produto = produtoRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundHandler("Produto não encontrado com o id: " +  id));
+        .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado com o id: " +  id));
         return new ProdutoResponseDTO(produto);
     }
 
     public List<ProdutoResponseDTO> findByNome(String nome) {
         List<Produto> produtos = produtoRepository.findByNomeContainingIgnoreCase(nome);
         if (produtos.isEmpty()){
-            throw new ResourceNotFoundHandler("Nenhum produto encontrado com o termo: " + nome);
+            throw new ResourceNotFoundException("Nenhum produto encontrado com o termo: " + nome);
         }
         return produtos.stream()
                 .map(ProdutoResponseDTO::new)
@@ -48,7 +52,7 @@ public class ProdutoService {
     public List<ProdutoResponseDTO> findByCategoria(Categoria categoria ){
         List<Produto> produtos = produtoRepository.findByCategoria(categoria);
         if(produtos.isEmpty()) {
-            throw new ResourceNotFoundHandler("Nenhum produto encontrado com o termo: " + categoria);
+            throw new ResourceNotFoundException("Nenhum produto encontrado com o termo: " + categoria);
         }
         return produtos.stream()
                 .map(ProdutoResponseDTO::new)
@@ -74,8 +78,7 @@ public class ProdutoService {
 
     @Transactional
     public ProdutoResponseDTO update(ProdutoRequestDTO dto, Long id) {
-        Produto produto = produtoRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundHandler("Produto não encontrado com o id: " + id));
+        Produto produto = returnId(id);
         copyDtoToEntity(dto, produto);
         return toProdutoDTO(produto);
     }
@@ -89,8 +92,7 @@ public class ProdutoService {
     }
     @Transactional
     public void delete(Long id) {
-        Produto produto = produtoRepository.findById(id).
-                orElseThrow(()-> new ResourceNotFoundHandler("Produto não encontrado com o id: " + id));
+        Produto produto = returnId(id);
         produtoRepository.delete(produto);
     }
 }

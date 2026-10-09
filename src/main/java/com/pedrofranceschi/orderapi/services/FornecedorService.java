@@ -1,12 +1,11 @@
 package com.pedrofranceschi.orderapi.services;
 
-import com.pedrofranceschi.orderapi.dto.CidadeResponseDTO;
 import com.pedrofranceschi.orderapi.dto.FornecedorRequestDTO;
 import com.pedrofranceschi.orderapi.dto.FornecedorResponseDTO;
-import com.pedrofranceschi.orderapi.dto.ProdutoResponseDTO;
 import com.pedrofranceschi.orderapi.entities.Cidade;
 import com.pedrofranceschi.orderapi.entities.Fornecedor;
-import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundHandler;
+import com.pedrofranceschi.orderapi.entities.Produto;
+import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundException;
 import com.pedrofranceschi.orderapi.repositories.CidadeRepository;
 import com.pedrofranceschi.orderapi.repositories.FornecedorRepository;
 import jakarta.transaction.Transactional;
@@ -22,7 +21,11 @@ public class FornecedorService {
     private final FornecedorRepository fornecedorRepository;
 
     private final CidadeRepository cidadeRepository;
-    private final CidadeService cidadeService;
+
+    private Fornecedor returnId(Long id) {
+        return fornecedorRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado com o id: " + id));
+    }
 
     public List<FornecedorResponseDTO> findAll() {
         return fornecedorRepository.findAll()
@@ -34,14 +37,14 @@ public class FornecedorService {
 
     public FornecedorResponseDTO findById(Long Id) {
         Fornecedor fornecedor = fornecedorRepository.findById(Id)
-                .orElseThrow(() -> new ResourceNotFoundHandler("Fornecedor não encontrado com o id: " + Id));
+                .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado com o id: " + Id));
         return new FornecedorResponseDTO(fornecedor);
     }
 
     public List<FornecedorResponseDTO> findByNome(String nome) {
         List<Fornecedor> fornecedores = fornecedorRepository.findByNomeContainingIgnoreCase(nome);
         if(fornecedores.isEmpty()){
-            throw new ResourceNotFoundHandler("Fornecedor não encontrado com o termo: " + nome);
+            throw new ResourceNotFoundException("Fornecedor não encontrado com o termo: " + nome);
         }
         return fornecedores.
                 stream()
@@ -69,8 +72,7 @@ public class FornecedorService {
 
     @Transactional
     public FornecedorResponseDTO update(FornecedorRequestDTO dto, Long id) {
-        Fornecedor fornecedor = fornecedorRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundHandler("Fornecedor não encontrado com o id: " + id));
+        Fornecedor fornecedor = returnId(id);
         copyDtoToEntity(dto, fornecedor);
         return toFornecedorDTO(fornecedor);
     }
@@ -78,13 +80,14 @@ public class FornecedorService {
     private void copyDtoToEntity(FornecedorRequestDTO fornecedorRequestDTO, Fornecedor fornecedor) {
         fornecedor.setNome(fornecedorRequestDTO.getNome());
         fornecedor.setContato(fornecedorRequestDTO.getContato());
-        fornecedor.setCidade(cidadeService.findById(fornecedorRequestDTO.getCidadeID()));
+        Cidade cidade = cidadeRepository.findById(fornecedorRequestDTO.getCidadeID())
+                .orElseThrow(() -> new ResourceNotFoundException("Cidade não encontrada com o id: " + fornecedorRequestDTO.getCidadeID()));
+        fornecedor.setCidade(cidade);
     }
 
     @Transactional
     public void delete(Long id) {
-        Fornecedor fornecedor = fornecedorRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundHandler("Fornecedor não encontrado com o id: " + id));
+        Fornecedor fornecedor = returnId(id);
         fornecedorRepository.delete(fornecedor);
     }
 }

@@ -3,13 +3,13 @@ package com.pedrofranceschi.orderapi.services;
 import com.pedrofranceschi.orderapi.dto.*;
 import com.pedrofranceschi.orderapi.entities.Cidade;
 import com.pedrofranceschi.orderapi.entities.Cliente;
-import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundHandler;
+import com.pedrofranceschi.orderapi.entities.Fornecedor;
+import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundException;
 import com.pedrofranceschi.orderapi.repositories.CidadeRepository;
 import com.pedrofranceschi.orderapi.repositories.ClienteRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 
@@ -22,9 +22,14 @@ public class ClienteService {
     private final CidadeRepository cidadeRepository;
     private final CidadeService cidadeService;
 
+    private Cliente returnId(Long id) {
+        return clienteRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com o id: " + id));
+    }
+
     public ClienteResponseDTO findById(Long id) {
         Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundHandler("Cliente não encontrado com o Id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com o Id: " + id));
         return new ClienteResponseDTO(cliente);
     }
 
@@ -38,7 +43,7 @@ public class ClienteService {
     public List<ClienteResponseDTO> findByNome(String nome) {
         List<Cliente> clientes = clienteRepository.findByNomeContainingIgnoreCase(nome);
         if(clientes.isEmpty()){
-            throw new ResourceNotFoundHandler("Cliente não encontrado com o termo: " + nome);
+            throw new ResourceNotFoundException("Cliente não encontrado com o termo: " + nome);
         }
         return clientes.stream().map(ClienteResponseDTO::new).toList();
 
@@ -54,7 +59,9 @@ public class ClienteService {
     private Cliente toEntity(ClienteRequestDTO clienteRequestDTO) {
         Cliente cliente = new Cliente();
         cliente.setNome(clienteRequestDTO.getNome());
-        cliente.setCidade(cidadeService.findById(clienteRequestDTO.getCidadeID()));
+        Cidade cidade = cidadeRepository.findById(clienteRequestDTO.getCidadeID())
+                .orElseThrow(() -> new ResourceNotFoundException("Cidade não encontrada com o id: " + clienteRequestDTO.getCidadeID()));
+        cliente.setCidade(cidade);
         cliente.setCNPJ(clienteRequestDTO.getCNPJ());
         cliente.setContato(clienteRequestDTO.getContato());
 
@@ -67,15 +74,13 @@ public class ClienteService {
 
     @Transactional
     public void delete(Long id) {
-        Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundHandler("Cliente não encontrado com o id: " + id));
+        Cliente cliente = returnId(id);
         clienteRepository.delete(cliente);
     }
 
     @Transactional
     public ClienteResponseDTO update (ClienteRequestDTO clienteRequestDTO, Long id) {
-        Cliente cliente = clienteRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundHandler("Cliente não encontrado com o id: " + id));
+        Cliente cliente = returnId(id);
         copyDtoToEntity(clienteRequestDTO, cliente);
         cliente = clienteRepository.save(cliente);
 
@@ -87,7 +92,9 @@ public class ClienteService {
         cliente.setNome(clienteRequestDTO.getNome());
         cliente.setCNPJ(clienteRequestDTO.getCNPJ());
         cliente.setContato(clienteRequestDTO.getContato());
-        cliente.setCidade(cidadeService.findById(clienteRequestDTO.getCidadeID()));
+        Cidade cidade = cidadeRepository.findById(clienteRequestDTO.getCidadeID())
+                .orElseThrow(() -> new ResourceNotFoundException("Cidade não encontrada com o id: " + clienteRequestDTO.getCidadeID()));
+        cliente.setCidade(cidade);
     }
 
 
