@@ -23,15 +23,18 @@ public class Pedido {
     @Setter(AccessLevel.NONE)
     private Long id;
 
+    @Column(name = "data_pedido", nullable = false)
     private LocalDateTime data;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
     private StatusPedido status;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemPedido> itens = new ArrayList<>();
 
     @Override

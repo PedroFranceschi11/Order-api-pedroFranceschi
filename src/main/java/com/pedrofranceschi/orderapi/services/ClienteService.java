@@ -18,7 +18,6 @@ import java.util.List;
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;
-
     private final CidadeRepository cidadeRepository;
     private final CidadeService cidadeService;
 
@@ -29,7 +28,7 @@ public class ClienteService {
 
     public ClienteResponseDTO findById(Long id) {
         Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com o Id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com o id: " + id));
         return new ClienteResponseDTO(cliente);
     }
 
