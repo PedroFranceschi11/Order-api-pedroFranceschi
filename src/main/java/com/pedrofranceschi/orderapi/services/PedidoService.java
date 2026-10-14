@@ -44,6 +44,13 @@ public class PedidoService {
                 .toList();
     }
 
+    public List<PedidoResponseDTO> findByClienteId(Long ClienteId) {
+        return pedidoRepository.findByClienteId(ClienteId).
+                stream().
+                map(PedidoResponseDTO::new).
+                toList();
+    }
+
     @Transactional
     public PedidoResponseDTO insert (PedidoRequestDTO dto) {
         Pedido novoPedido = toEntity(dto);
@@ -84,4 +91,19 @@ public class PedidoService {
         return new PedidoResponseDTO(pedido);
     }
 
+    @Transactional
+    public PedidoResponseDTO update(PedidoRequestDTO pedidoRequestDTO, Long id) {
+        Pedido pedido = returnId(id);
+        copyDtoToEntity(pedidoRequestDTO, pedido);
+        pedido = pedidoRepository.save(pedido);
+
+        return toPedidoDTO(pedido);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Pedido pedido = returnId(id);
+        pedidoRepository.delete(pedido);
+
+    }
 }

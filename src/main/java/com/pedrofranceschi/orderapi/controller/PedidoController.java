@@ -3,10 +3,12 @@ import com.pedrofranceschi.orderapi.dto.ClienteRequestDTO;
 import com.pedrofranceschi.orderapi.dto.ClienteResponseDTO;
 import com.pedrofranceschi.orderapi.dto.PedidoRequestDTO;
 import com.pedrofranceschi.orderapi.dto.PedidoResponseDTO;
+import com.pedrofranceschi.orderapi.entities.Pedido;
 import com.pedrofranceschi.orderapi.repositories.PedidoRepository;
 import com.pedrofranceschi.orderapi.services.PedidoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +26,14 @@ public class PedidoController {
         return ResponseEntity.ok().body(pedidoService.findAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value ="/{id}")
     public ResponseEntity<PedidoResponseDTO> findByiD(@PathVariable Long id) {
         return ResponseEntity.ok().body(pedidoService.findById(id));
+    }
+
+    @GetMapping(value = "/cliente/{ClienteId}")
+    public ResponseEntity<List<PedidoResponseDTO>> findByClienteId(@PathVariable Long ClienteId) {
+        return ResponseEntity.ok().body(pedidoService.findByClienteId(ClienteId));
     }
 
     @PostMapping
@@ -34,5 +41,18 @@ public class PedidoController {
         PedidoResponseDTO response = pedidoService.insert(pedido);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Pedido> delete(@PathVariable Long id) {
+        pedidoService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PedidoResponseDTO> update(@RequestBody @Valid PedidoRequestDTO pedido, @PathVariable Long id){
+        return ResponseEntity.ok().body(pedidoService.update(pedido, id));
+    }
+
+
 
 }
