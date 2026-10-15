@@ -57,8 +57,8 @@ public class CidadeService {
 
     private void copyDtoToEntity(CidadeRequestDTO cidadeRequestDTO, Cidade cidade){
         cidade.setNome(cidadeRequestDTO.getNome());
-        Estado estado = estadoRepository.findById(cidadeRequestDTO.getEstado().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Estado não encontrado com o id: " + cidadeRequestDTO.getEstado().getId()));
+        Estado estado = estadoRepository.findById(cidadeRequestDTO.getEstadoID())
+                .orElseThrow(() -> new ResourceNotFoundException("Estado não encontrado com o id: " + cidadeRequestDTO.getEstadoID()));
         cidade.setEstado(estado);
 
     }
@@ -73,12 +73,14 @@ public class CidadeService {
         return new CidadeResponseDTO(cidade);
     }
 
+    @Transactional
     public CidadeResponseDTO update(CidadeRequestDTO dto, Long id) {
         Cidade cidade = returnId(id);
         copyDtoToEntity(dto, cidade);
         return toCidadeDTO(cidade);
     }
 
+    @Transactional
     public void delete(Long id) {
         Cidade cidade = returnId(id);
         cidadeRepository.deleteById(id);

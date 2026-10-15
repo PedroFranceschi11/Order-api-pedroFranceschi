@@ -3,9 +3,7 @@ package com.pedrofranceschi.orderapi.controller;
 import com.pedrofranceschi.orderapi.dto.MarcaRequestDTO;
 import com.pedrofranceschi.orderapi.dto.MarcaResponseDTO;
 import com.pedrofranceschi.orderapi.entities.Marca;
-import com.pedrofranceschi.orderapi.repositories.MarcaRepository;
 import com.pedrofranceschi.orderapi.services.MarcaService;
-import com.pedrofranceschi.orderapi.services.ProdutoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,8 +18,6 @@ import java.util.List;
 public class MarcaController {
 
     private final MarcaService marcaService;
-    private final ProdutoService produtoService;
-    private final MarcaRepository marcaRepository;
 
     @GetMapping
     public ResponseEntity<List<MarcaResponseDTO>> findAll() {
@@ -29,7 +25,7 @@ public class MarcaController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Marca> findById(@PathVariable Long id) {
+    public ResponseEntity<MarcaResponseDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(marcaService.findById(id));
     }
 
@@ -50,7 +46,7 @@ public class MarcaController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Marca> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         marcaService.delete(id);
         return ResponseEntity.noContent().build();
     }

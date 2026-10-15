@@ -3,7 +3,6 @@ package com.pedrofranceschi.orderapi.controller;
 import com.pedrofranceschi.orderapi.dto.ClienteRequestDTO;
 import com.pedrofranceschi.orderapi.dto.ClienteResponseDTO;
 import com.pedrofranceschi.orderapi.entities.Cliente;
-import com.pedrofranceschi.orderapi.repositories.ClienteRepository;
 import com.pedrofranceschi.orderapi.services.ClienteService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,7 +18,6 @@ import java.util.List;
 public class ClienteController {
 
     private final ClienteService clienteService;
-    private final ClienteRepository clienteRepository;
 
     @GetMapping
     public ResponseEntity<List<ClienteResponseDTO>> findAll() {
@@ -43,9 +41,9 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Cliente> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         clienteService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build(); // Retorna 204 No Content sem corpo
     }
 
     @PutMapping("/{id}")

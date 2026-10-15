@@ -21,7 +21,7 @@ public class ProdutoRequestDTO {
     private String nome;
 
     @NotBlank(message = "A descrição do produto e obrigatoria")
-    @Size(max = 100, message = "A descrição deve ter no maximo 100 caracteres")
+    @Size(max = 50, message = "A descrição deve ter no maximo 100 caracteres")
     private String descricao;
 
     @NotNull(message = "O preço do produto e obrigatorio")

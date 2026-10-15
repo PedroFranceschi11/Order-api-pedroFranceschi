@@ -30,9 +30,6 @@ public class EstadoService {
 
     public List<EstadoResponseDTO> findByNome (String nome){
         List<Estado> estados = estadoRepository.findByNomeContainingIgnoreCase(nome);
-        if(estados.isEmpty()){
-            throw new ResourceNotFoundException("Estado não encontado com o termo: " + nome);
-        }
         return estados.stream().map(EstadoResponseDTO::new).toList();
     }
 }

@@ -16,7 +16,6 @@ public class ProdutoResponseDTO {
 
     private Long id;
 
-    @NotBlank
     private String nome;
 
     private String descricao;

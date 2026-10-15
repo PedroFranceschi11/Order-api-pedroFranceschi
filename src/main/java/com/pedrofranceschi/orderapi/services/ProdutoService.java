@@ -2,10 +2,13 @@ package com.pedrofranceschi.orderapi.services;
 
 import com.pedrofranceschi.orderapi.dto.ProdutoRequestDTO;
 import com.pedrofranceschi.orderapi.dto.ProdutoResponseDTO;
+import com.pedrofranceschi.orderapi.entities.Marca;
 import com.pedrofranceschi.orderapi.entities.Produto;
+import com.pedrofranceschi.orderapi.entities.ProdutoFornecedor;
 import com.pedrofranceschi.orderapi.entities.enums.Categoria;
 import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundException;
 import com.pedrofranceschi.orderapi.repositories.MarcaRepository;
+import com.pedrofranceschi.orderapi.repositories.ProdutoFornecedorRepository;
 import com.pedrofranceschi.orderapi.repositories.ProdutoRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -19,7 +22,6 @@ public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
     private final MarcaRepository marcaRepository;
-    private final MarcaService marcaService;
 
     private Produto returnId(Long id) {
         return produtoRepository.findById(id).
@@ -86,7 +88,9 @@ public class ProdutoService {
     private void copyDtoToEntity(ProdutoRequestDTO produtoRequestDTO, Produto produto) {
         produto.setNome(produtoRequestDTO.getNome());
         produto.setCategoria(produtoRequestDTO.getCategoria());
-        produto.setMarca(marcaService.findById(produtoRequestDTO.getMarcaID()));
+        Marca marca = marcaRepository.findById(produtoRequestDTO.getMarcaID()).
+                orElseThrow(() -> new ResourceNotFoundException("Marca não encontrada com o id: " + produtoRequestDTO.getMarcaID()));
+        produto.setMarca(marca);
         produto.setPreco(produtoRequestDTO.getPreco());
         produto.setDescricao(produtoRequestDTO.getDescricao());
     }

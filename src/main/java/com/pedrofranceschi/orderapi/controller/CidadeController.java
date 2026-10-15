@@ -47,10 +47,10 @@ public class CidadeController {
        return ResponseEntity.ok().body(cidadeService.update(cidadeRequestDTO, id));
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Cidade> delete(@PathVariable Long id) {
-       cidadeService.delete(id);
-       return ResponseEntity.noContent().build();
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        cidadeService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

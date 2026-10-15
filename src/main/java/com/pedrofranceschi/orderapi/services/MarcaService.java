@@ -20,7 +20,7 @@ public class MarcaService {
 
     private Marca returnId(Long id) {
         return marcaRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundException("Marca não encontrado com o id: " + id));
+                orElseThrow(() -> new ResourceNotFoundException("Marca não encontrada com o id: " + id));
     }
 
     public List<MarcaResponseDTO> findAll() {
@@ -30,9 +30,10 @@ public class MarcaService {
                 .toList();
     }
 
-    public Marca findById(Long id) {
-        return marcaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Marca não encontrada com o id: " + id));
+    public MarcaResponseDTO findById(Long id) {
+        Marca marca = marcaRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Marca não encontrada com o id: " + id));
+        return new MarcaResponseDTO(marca);
     }
 
     public List<MarcaResponseDTO> findByNome(String nome) {

@@ -24,7 +24,11 @@ public class Marca{
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Marca marca = (Marca) o;
-        return Objects.equals(id, marca.id);
+        return Objects.equals(id, marca.id) && Objects.equals(nome, marca.nome);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome);
+    }
 }

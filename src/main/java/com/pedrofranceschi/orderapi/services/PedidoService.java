@@ -24,7 +24,6 @@ public class PedidoService {
     private final PedidoRepository pedidoRepository;
     private final ClienteRepository clienteRepository;
     private final ProdutoRepository produtoRepository;
-    private final ProdutoService produtoService;
 
     private Pedido returnId(Long id) {
         return pedidoRepository.findById(id).
@@ -66,7 +65,6 @@ public class PedidoService {
 
     private void copyDtoToEntity(PedidoRequestDTO pedidoRequestDTO, Pedido pedido) {
         pedido.setData(LocalDateTime.now());
-        pedido.setStatus(StatusPedido.PENDENTE);
         Cliente cliente = clienteRepository.findById(pedidoRequestDTO.getClienteId()).
                 orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
         pedido.setCliente(cliente);

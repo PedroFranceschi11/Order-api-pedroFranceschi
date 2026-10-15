@@ -13,7 +13,6 @@ import java.util.Objects;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Produto{
 
     @Id
@@ -25,7 +24,7 @@ public class Produto{
     @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "descricao", length = 35, nullable = false)
+    @Column(name = "descricao", length = 50, nullable = false)
     private String descricao;
 
     @Column(name = "preco", nullable = false)

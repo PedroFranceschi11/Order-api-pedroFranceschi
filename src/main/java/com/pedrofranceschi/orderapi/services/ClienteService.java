@@ -3,7 +3,6 @@ package com.pedrofranceschi.orderapi.services;
 import com.pedrofranceschi.orderapi.dto.*;
 import com.pedrofranceschi.orderapi.entities.Cidade;
 import com.pedrofranceschi.orderapi.entities.Cliente;
-import com.pedrofranceschi.orderapi.entities.Fornecedor;
 import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundException;
 import com.pedrofranceschi.orderapi.repositories.CidadeRepository;
 import com.pedrofranceschi.orderapi.repositories.ClienteRepository;
@@ -19,7 +18,6 @@ public class ClienteService {
 
     private final ClienteRepository clienteRepository;
     private final CidadeRepository cidadeRepository;
-    private final CidadeService cidadeService;
 
     private Cliente returnId(Long id) {
         return clienteRepository.findById(id).
