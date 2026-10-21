@@ -9,6 +9,7 @@ import java.util.Objects;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "cidade")
 @Entity
 public class Cidade {

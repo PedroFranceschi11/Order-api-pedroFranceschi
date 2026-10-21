@@ -3,14 +3,12 @@ package com.pedrofranceschi.orderapi.dto;
 import com.pedrofranceschi.orderapi.entities.ItemPedido;
 import com.pedrofranceschi.orderapi.entities.Pedido;
 import com.pedrofranceschi.orderapi.entities.Produto;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 public class ItemPedidoResponseDTO {
 

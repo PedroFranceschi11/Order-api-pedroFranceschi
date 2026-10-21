@@ -10,6 +10,7 @@ import java.util.Optional;
 @Getter @Setter
 @Table(name = "fornecedor")
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Fornecedor {

@@ -22,23 +22,23 @@ public class CidadeController {
    private final CidadeService cidadeService;
 
    @GetMapping
-    public ResponseEntity<List<CidadeResponseDTO>> findAll() {
+    public ResponseEntity<List<Cidade>> findAll() {
        return ResponseEntity.ok().body(cidadeService.findAll());
    }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CidadeResponseDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<Cidade> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(cidadeService.findById(id));
     }
 
     @GetMapping(value = "/estado/{estadoId}")
-    public ResponseEntity<List<CidadeResponseDTO>> findByEstado(@PathVariable Long estadoId){
+    public ResponseEntity<List<Cidade>> findByEstado(@PathVariable Long estadoId){
        return ResponseEntity.ok().body(cidadeService.findByEstado(estadoId));
     }
 
     @PostMapping
     public ResponseEntity<CidadeResponseDTO> insert(@Valid @RequestBody CidadeRequestDTO cidadeRequestDTO) {
-        CidadeResponseDTO response = cidadeService.insert(cidadeRequestDTO);
+        CidadeResponseDTO response = cidadeService.vincularEntidade(cidadeRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

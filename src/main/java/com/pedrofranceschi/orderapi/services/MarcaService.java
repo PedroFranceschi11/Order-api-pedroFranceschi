@@ -3,7 +3,6 @@ package com.pedrofranceschi.orderapi.services;
 import com.pedrofranceschi.orderapi.dto.MarcaRequestDTO;
 import com.pedrofranceschi.orderapi.dto.MarcaResponseDTO;
 import com.pedrofranceschi.orderapi.entities.Marca;
-import com.pedrofranceschi.orderapi.entities.Produto;
 import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundException;
 import com.pedrofranceschi.orderapi.repositories.MarcaRepository;
 import jakarta.transaction.Transactional;
@@ -18,33 +17,21 @@ public class MarcaService {
 
     private final MarcaRepository marcaRepository;
 
-    private Marca returnId(Long id) {
+    public List<Marca> findAll() {
+        return marcaRepository.findAll();
+    }
+
+    public Marca findById(Long id) {
         return marcaRepository.findById(id).
                 orElseThrow(() -> new ResourceNotFoundException("Marca não encontrada com o id: " + id));
     }
 
-    public List<MarcaResponseDTO> findAll() {
-        return marcaRepository.findAll()
-                .stream()
-                .map(MarcaResponseDTO::new)
-                .toList();
-    }
-
-    public MarcaResponseDTO findById(Long id) {
-        Marca marca = marcaRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundException("Marca não encontrada com o id: " + id));
-        return new MarcaResponseDTO(marca);
-    }
-
-    public List<MarcaResponseDTO> findByNome(String nome) {
+    public List<Marca> findByNome(String nome) {
         List<Marca> marcas = marcaRepository.findByNomeContainingIgnoreCase(nome);
         if(marcas.isEmpty()){
             throw new ResourceNotFoundException("Marca não encontrada com o termo: " + nome);
         }
-        return marcas.
-                stream().
-                map(MarcaResponseDTO::new).
-                toList();
+        return marcas;
     }
 
     @Transactional
@@ -57,13 +44,14 @@ public class MarcaService {
 
     @Transactional
     public MarcaResponseDTO update(MarcaRequestDTO marcaRequestDTO, Long id) {
-        Marca marca = returnId(id);
+        Marca marca = findById(id);
         marca.setNome(marcaRequestDTO.getNome());
         return new MarcaResponseDTO(marca);
     }
 
+    @Transactional
     public void delete(Long id) {
-        Marca marca = returnId(id);
+        Marca marca = findById(id);
         marcaRepository.delete(marca);
     }
 }

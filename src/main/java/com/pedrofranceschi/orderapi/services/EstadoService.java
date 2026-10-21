@@ -15,21 +15,18 @@ public class EstadoService {
 
     private final EstadoRepository estadoRepository;
 
-    public List<EstadoResponseDTO> findAll() {
-        return estadoRepository.findAll()
-                .stream()
-                .map(EstadoResponseDTO::new)
-                .toList();
+    public List<Estado> findAll() {
+        return estadoRepository.findAll();
     }
 
-    public EstadoResponseDTO findById(Long id) {
+    public Estado findById(Long id) {
         Estado estado = estadoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Estado não encontrado com o id: " + id));
-        return new EstadoResponseDTO(estado);
+        return estado;
     }
 
-    public List<EstadoResponseDTO> findByNome (String nome){
+    public List<Estado> findByNome (String nome){
         List<Estado> estados = estadoRepository.findByNomeContainingIgnoreCase(nome);
-        return estados.stream().map(EstadoResponseDTO::new).toList();
+        return estados;
     }
 }

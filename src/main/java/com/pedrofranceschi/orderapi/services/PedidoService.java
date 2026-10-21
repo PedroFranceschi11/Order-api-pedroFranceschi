@@ -7,14 +7,15 @@ import com.pedrofranceschi.orderapi.entities.Pedido;
 import com.pedrofranceschi.orderapi.entities.Produto;
 import com.pedrofranceschi.orderapi.entities.enums.StatusPedido;
 import com.pedrofranceschi.orderapi.exceptions.ResourceNotFoundException;
-import com.pedrofranceschi.orderapi.repositories.ClienteRepository;
 import com.pedrofranceschi.orderapi.repositories.PedidoRepository;
-import com.pedrofranceschi.orderapi.repositories.ProdutoRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.hibernate.exception.DataException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,60 +23,76 @@ import java.util.List;
 public class PedidoService {
 
     private final PedidoRepository pedidoRepository;
-    private final ClienteRepository clienteRepository;
-    private final ProdutoRepository produtoRepository;
+    private final ClienteService clienteService;
+    private final ProdutoService produtoService;
 
-    private Pedido returnId(Long id) {
+    public Pedido findById(Long id) {
         return pedidoRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado com o id: " + id));
-    }
-
-    public PedidoResponseDTO findById(Long id) {
-        Pedido pedido = pedidoRepository.findById(id).
                 orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado com o id: " +id));
-    return new PedidoResponseDTO(pedido);
     }
 
-    public List<PedidoResponseDTO> findAll() {
-        return pedidoRepository.findAll()
-                .stream()
-                .map(PedidoResponseDTO::new)
-                .toList();
+    public List<Pedido> findAll() {
+        return pedidoRepository.findAll();
     }
 
-    public List<PedidoResponseDTO> findByClienteId(Long ClienteId) {
-        return pedidoRepository.findByClienteId(ClienteId).
-                stream().
-                map(PedidoResponseDTO::new).
-                toList();
+    public List<Pedido> findByClienteId(Long ClienteId) {
+        return pedidoRepository.findByClienteId(ClienteId);
+
     }
 
     @Transactional
-    public PedidoResponseDTO insert (PedidoRequestDTO dto) {
-        Pedido novoPedido = toEntity(dto);
-        novoPedido = pedidoRepository.save(novoPedido);
-        return toPedidoDTO(novoPedido);
+    public PedidoResponseDTO  vincularEntidade(PedidoRequestDTO requestDTO) {
+        var cliente = clienteService.findById(requestDTO.getClienteId());
+        Pedido pedido = toEntity(requestDTO, cliente);
+        pedido = save(pedido);
+        return toResponseDTO(pedido);
     }
 
-    private Pedido toEntity(PedidoRequestDTO pedidoRequestDTO) {
-        Pedido pedido = new Pedido();
+    @Transactional
+    public Pedido save(Pedido pedido){
+        try{
+            return pedidoRepository.save(pedido);
+        }catch (DataException e) {
+            throw new ResourceNotFoundException("Erro ao salvar no banco");
+        }
+    }
+
+    @Transactional
+    public PedidoResponseDTO update(PedidoRequestDTO pedidoRequestDTO, Long id) {
+        Pedido pedido = findById(id);
         copyDtoToEntity(pedidoRequestDTO, pedido);
+        pedido = save(pedido);
+        return toResponseDTO(pedido);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Pedido pedido = findById(id);
+        pedidoRepository.delete(pedido);
+    }
+
+    private Pedido toEntity(PedidoRequestDTO pedidoRequestDTO, Cliente cliente) {
+        Pedido pedido = Pedido.builder()
+                .data(LocalDateTime.now())
+                .status(StatusPedido.PENDENTE)
+                .cliente(cliente)
+                .itens(new ArrayList<>())
+                .build();
+
+        preencherItens(pedidoRequestDTO, pedido);
         return pedido;
     }
 
     private void copyDtoToEntity(PedidoRequestDTO pedidoRequestDTO, Pedido pedido) {
         pedido.setData(LocalDateTime.now());
-        Cliente cliente = clienteRepository.findById(pedidoRequestDTO.getClienteId()).
-                orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
-        pedido.setCliente(cliente);
+        pedido.setCliente(clienteService.findById(pedidoRequestDTO.getClienteId()));
         preencherItens(pedidoRequestDTO, pedido);
     }
 
     private void preencherItens(PedidoRequestDTO pedidoRequestDTO, Pedido pedido) {
         pedido.getItens().clear();
-        for(ItemPedidoRequestDTO itemDto : pedidoRequestDTO.getItens()) {
-            Produto produto = produtoRepository.findById(itemDto.getProdutoId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
+        for (ItemPedidoRequestDTO itemDto : pedidoRequestDTO.getItens()) {
+            Produto produto = produtoService.findById(itemDto.getProdutoId());
             ItemPedido item = new ItemPedido();
             item.setProduto(produto);
             item.setQuantidade(itemDto.getQuantidade());
@@ -85,23 +102,25 @@ public class PedidoService {
         }
     }
 
-    private PedidoResponseDTO toPedidoDTO(Pedido pedido) {
-        return new PedidoResponseDTO(pedido);
+    private PedidoResponseDTO toResponseDTO(Pedido pedido) {
+        return PedidoResponseDTO.builder()
+                .data(pedido.getData())
+                .status(pedido.getStatus())
+                .cliente(new ClienteResponseDTO(pedido.getCliente()))
+                .itens(pedido.getItens().stream()
+                        .map(this::toItemResponseDTO)
+                        .toList())
+                .build();
     }
 
-    @Transactional
-    public PedidoResponseDTO update(PedidoRequestDTO pedidoRequestDTO, Long id) {
-        Pedido pedido = returnId(id);
-        copyDtoToEntity(pedidoRequestDTO, pedido);
-        pedido = pedidoRepository.save(pedido);
-
-        return toPedidoDTO(pedido);
+    private ItemPedidoResponseDTO toItemResponseDTO(ItemPedido item) {
+        return ItemPedidoResponseDTO.builder()
+                .produtoId(item.getProduto().getId())
+                .nomeProduto(item.getProduto().getNome())
+                .quantidade(item.getQuantidade())
+                .precoUnitario(item.getPreco())
+                .subTotal(item.getQuantidade() * item.getPreco())
+                .build();
     }
 
-    @Transactional
-    public void delete(Long id) {
-        Pedido pedido = returnId(id);
-        pedidoRepository.delete(pedido);
-
-    }
 }

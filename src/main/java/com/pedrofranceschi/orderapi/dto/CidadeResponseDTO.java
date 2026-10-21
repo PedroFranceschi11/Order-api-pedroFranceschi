@@ -2,16 +2,14 @@ package com.pedrofranceschi.orderapi.dto;
 
 import com.pedrofranceschi.orderapi.entities.Cidade;
 import com.pedrofranceschi.orderapi.entities.Estado;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.*;
 
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CidadeResponseDTO {
 
     private Long id;

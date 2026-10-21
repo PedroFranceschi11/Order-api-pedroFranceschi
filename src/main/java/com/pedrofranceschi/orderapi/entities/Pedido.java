@@ -13,6 +13,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Table(name = "pedido")
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

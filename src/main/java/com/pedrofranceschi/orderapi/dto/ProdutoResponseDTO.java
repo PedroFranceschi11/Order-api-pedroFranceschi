@@ -4,14 +4,13 @@ import com.pedrofranceschi.orderapi.entities.Marca;
 import com.pedrofranceschi.orderapi.entities.Produto;
 import com.pedrofranceschi.orderapi.entities.enums.Categoria;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class ProdutoResponseDTO {
 
     private Long id;

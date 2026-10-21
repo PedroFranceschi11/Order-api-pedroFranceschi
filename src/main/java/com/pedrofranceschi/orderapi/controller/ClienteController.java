@@ -20,23 +20,23 @@ public class ClienteController {
     private final ClienteService clienteService;
 
     @GetMapping
-    public ResponseEntity<List<ClienteResponseDTO>> findAll() {
+    public ResponseEntity<List<Cliente>> findAll() {
         return ResponseEntity.ok().body(clienteService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClienteResponseDTO> findByiD(@PathVariable Long id) {
+    public ResponseEntity<Cliente> findByiD(@PathVariable Long id) {
         return ResponseEntity.ok().body(clienteService.findById(id));
 
     }
     @GetMapping(value = "/nome/{nome}")
-    public ResponseEntity <List<ClienteResponseDTO>> findByNome(@PathVariable String nome) {
+    public ResponseEntity <List<Cliente>> findByNome(@PathVariable String nome) {
         return ResponseEntity.ok().body(clienteService.findByNome(nome));
     }
 
     @PostMapping
     public ResponseEntity<ClienteResponseDTO> insert(@RequestBody @Valid ClienteRequestDTO cliente){
-        ClienteResponseDTO response = clienteService.insert(cliente);
+        ClienteResponseDTO response = clienteService.vincularEntidade(cliente);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

@@ -1,15 +1,13 @@
 package com.pedrofranceschi.orderapi.dto;
 
 import com.pedrofranceschi.orderapi.entities.ProdutoFornecedor;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
 public class ProdutoFornecedorResponseDTO {
 
     private Long id;
@@ -20,14 +18,14 @@ public class ProdutoFornecedorResponseDTO {
 
     private String nomeProduto;
 
-    private String contato;
+    private String contatoFornecedor;
 
 
     public ProdutoFornecedorResponseDTO(ProdutoFornecedor produtoFornecedor) {
         this.id = produtoFornecedor.getId();
         this.produtoId = produtoFornecedor.getProduto().getId();
         this.nomeProduto = produtoFornecedor.getProduto().getNome();
-        this.contato = produtoFornecedor.getFornecedor().getContato();
+        this.contatoFornecedor = produtoFornecedor.getFornecedor().getContato();
         this.fornecedorId = produtoFornecedor.getFornecedor().getId();
     }
 }

@@ -20,17 +20,17 @@ public class MarcaController {
     private final MarcaService marcaService;
 
     @GetMapping
-    public ResponseEntity<List<MarcaResponseDTO>> findAll() {
+    public ResponseEntity<List<Marca>> findAll() {
         return ResponseEntity.ok().body(marcaService.findAll());
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<MarcaResponseDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<Marca> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(marcaService.findById(id));
     }
 
     @GetMapping(value = "/nome/{nome}")
-    public ResponseEntity <List<MarcaResponseDTO>> findByUf(@PathVariable String nome){
+    public ResponseEntity <List<Marca>> findByUf(@PathVariable String nome){
         return ResponseEntity.ok().body(marcaService.findByNome(nome));
     }
 

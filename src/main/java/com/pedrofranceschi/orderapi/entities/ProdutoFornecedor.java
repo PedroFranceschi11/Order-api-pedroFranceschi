@@ -3,12 +3,16 @@ package com.pedrofranceschi.orderapi.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
-@Entity
-@Table(name = "produto_fornecedor")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@EqualsAndHashCode
+@Entity
+@Table(name = "produto_fornecedor")
 public class ProdutoFornecedor {
 
     @Id
@@ -25,6 +29,8 @@ public class ProdutoFornecedor {
     @JoinColumn(name = "fornecedor_id", nullable = false)
     private Fornecedor fornecedor;
 
+    @Column(name = "data_prevista_entrega")
+    private LocalDate dataPrevistaEntrega;
 
 
 }

@@ -22,23 +22,23 @@ public class PedidoController {
     private final PedidoService pedidoService;
 
     @GetMapping
-    public ResponseEntity<List<PedidoResponseDTO>> findAll() {
+    public ResponseEntity<List<Pedido>> findAll() {
         return ResponseEntity.ok().body(pedidoService.findAll());
     }
 
     @GetMapping(value ="/{id}")
-    public ResponseEntity<PedidoResponseDTO> findByiD(@PathVariable Long id) {
+    public ResponseEntity<Pedido> findByiD(@PathVariable Long id) {
         return ResponseEntity.ok().body(pedidoService.findById(id));
     }
 
     @GetMapping(value = "/cliente/{ClienteId}")
-    public ResponseEntity<List<PedidoResponseDTO>> findByClienteId(@PathVariable Long ClienteId) {
+    public ResponseEntity<List<Pedido>> findByClienteId(@PathVariable Long ClienteId) {
         return ResponseEntity.ok().body(pedidoService.findByClienteId(ClienteId));
     }
 
     @PostMapping
     public ResponseEntity<PedidoResponseDTO> insert(@RequestBody @Valid PedidoRequestDTO pedido){
-        PedidoResponseDTO response = pedidoService.insert(pedido);
+        PedidoResponseDTO response = pedidoService.vincularEntidade(pedido);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

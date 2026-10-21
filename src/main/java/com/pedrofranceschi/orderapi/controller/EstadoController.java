@@ -22,17 +22,17 @@ public class EstadoController {
     private final EstadoService estadoService;
 
     @GetMapping
-    public ResponseEntity<List<EstadoResponseDTO>> findAll() {
+    public ResponseEntity<List<Estado>> findAll() {
         return ResponseEntity.ok().body(estadoService.findAll());
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<EstadoResponseDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<Estado> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(estadoService.findById(id));
     }
 
     @GetMapping(value = "/nome/{nome}")
-    public ResponseEntity<List<EstadoResponseDTO>> findByNome(@PathVariable String nome) {
+    public ResponseEntity<List<Estado>> findByNome(@PathVariable String nome) {
         return ResponseEntity.ok().body(estadoService.findByNome(nome));
     }
 

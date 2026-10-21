@@ -11,6 +11,7 @@ import java.util.Objects;
 @Setter
 @Table(name = "produto")
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Produto{
