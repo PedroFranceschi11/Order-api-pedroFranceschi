@@ -39,7 +39,7 @@ public class ClienteService {
     }
 
     @Transactional
-    public ClienteResponseDTO vincularEntidade(ClienteRequestDTO dto, Long id) {
+    public ClienteResponseDTO vincularEntidade(ClienteRequestDTO dto) {
         var cidade = cidadeService.findById(dto.getCidadeID());
         Cliente cliente = toEntity(dto, cidade);
         cliente = save(cliente);
@@ -47,7 +47,7 @@ public class ClienteService {
 
     }
 
-    public Cliente save(Cliente cliente){
+    private Cliente save(Cliente cliente){
         try{
             return clienteRepository.save(cliente);
         }catch (DataException e) {

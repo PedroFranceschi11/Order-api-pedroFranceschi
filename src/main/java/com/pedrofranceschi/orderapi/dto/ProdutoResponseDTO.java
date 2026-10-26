@@ -1,10 +1,12 @@
 package com.pedrofranceschi.orderapi.dto;
 
-import com.pedrofranceschi.orderapi.entities.Marca;
+
 import com.pedrofranceschi.orderapi.entities.Produto;
 import com.pedrofranceschi.orderapi.entities.enums.Categoria;
-import jakarta.validation.constraints.NotBlank;
+
 import lombok.*;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -19,7 +21,7 @@ public class ProdutoResponseDTO {
 
     private String descricao;
 
-    private Double preco;
+    private BigDecimal preco;
 
     private MarcaResponseDTO marca;
 

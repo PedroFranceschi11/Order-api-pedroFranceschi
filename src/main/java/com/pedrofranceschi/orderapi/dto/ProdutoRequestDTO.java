@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,7 +27,7 @@ public class ProdutoRequestDTO {
     private String descricao;
 
     @NotNull(message = "O preço do produto e obrigatorio")
-    private Double preco;
+    private BigDecimal preco;
 
     @NotNull(message = "A marca é obrigatória")
     @Valid

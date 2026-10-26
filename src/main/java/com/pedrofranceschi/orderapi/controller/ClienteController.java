@@ -43,7 +43,7 @@ public class ClienteController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         clienteService.delete(id);
-        return ResponseEntity.noContent().build(); // Retorna 204 No Content sem corpo
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")

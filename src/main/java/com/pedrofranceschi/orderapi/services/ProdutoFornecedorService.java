@@ -58,8 +58,7 @@ public class ProdutoFornecedorService {
         return toResponseDTO(produtoFornecedor);
     }
 
-    @Transactional
-    public ProdutoFornecedor save(ProdutoFornecedor produtoFornecedor) {
+    private ProdutoFornecedor save(ProdutoFornecedor produtoFornecedor) {
         try{
             return produtoFornecedorRepository.save(produtoFornecedor);
         }catch (DataException e) {

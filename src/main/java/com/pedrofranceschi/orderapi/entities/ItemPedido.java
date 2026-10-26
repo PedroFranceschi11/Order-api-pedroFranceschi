@@ -3,6 +3,7 @@ package com.pedrofranceschi.orderapi.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Getter
@@ -29,8 +30,8 @@ public class ItemPedido {
     @Column(name = "quantidade", nullable = false)
     private Integer quantidade;
 
-    @Column(name = "preco", nullable = false)
-    private Double preco;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal preco;
 
     @Override
     public boolean equals(Object o) {
@@ -44,7 +45,7 @@ public class ItemPedido {
         return Objects.hashCode(id);
     }
 
-    public double getSubTotal(){
-        return preco * quantidade;
+    public BigDecimal getSubTotal(){
+        return preco.multiply(java.math.BigDecimal.valueOf(quantidade));
     }
 }

@@ -28,8 +28,8 @@ public class Produto{
     @Column(name = "descricao", length = 50, nullable = false)
     private String descricao;
 
-    @Column(name = "preco", nullable = false)
-    private Double preco;
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigDecimal preco;
 
     @ManyToOne
     @JoinColumn(name = "marca_id")

@@ -5,6 +5,8 @@ import com.pedrofranceschi.orderapi.entities.Pedido;
 import com.pedrofranceschi.orderapi.entities.Produto;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @Getter
 @Setter
@@ -16,11 +18,11 @@ public class ItemPedidoResponseDTO {
 
     private String nomeProduto;
 
-    private Double precoUnitario;
+    private BigDecimal precoUnitario;
 
     private Integer quantidade;
 
-    private Double subTotal;
+    private BigDecimal subTotal;
 
     public ItemPedidoResponseDTO(ItemPedido itemPedido) {
         this.produtoId = itemPedido.getProduto().getId();

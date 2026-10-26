@@ -51,8 +51,8 @@ public class CidadeService {
         return toResponseDTO(cidade);
     }
 
-    @Transactional
-    public Cidade save(Cidade cidade){
+
+    private Cidade save(Cidade cidade){
         try{
             return cidadeRepository.save(cidade);
         }catch (DataException e) {

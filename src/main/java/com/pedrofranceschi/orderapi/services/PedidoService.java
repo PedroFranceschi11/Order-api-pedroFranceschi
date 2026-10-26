@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.hibernate.exception.DataException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -48,8 +49,8 @@ public class PedidoService {
         return toResponseDTO(pedido);
     }
 
-    @Transactional
-    public Pedido save(Pedido pedido){
+
+    private Pedido save(Pedido pedido){
         try{
             return pedidoRepository.save(pedido);
         }catch (DataException e) {
@@ -119,8 +120,7 @@ public class PedidoService {
                 .nomeProduto(item.getProduto().getNome())
                 .quantidade(item.getQuantidade())
                 .precoUnitario(item.getPreco())
-                .subTotal(item.getQuantidade() * item.getPreco())
+                .subTotal(java.math.BigDecimal.valueOf(item.getQuantidade()).multiply(item.getPreco()))
                 .build();
     }
-
 }

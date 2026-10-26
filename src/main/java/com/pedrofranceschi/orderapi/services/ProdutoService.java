@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.hibernate.exception.DataException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -57,8 +58,8 @@ public class ProdutoService {
         return toResponseDTO(produto);
     }
 
-    @Transactional
-    public Produto save(Produto produto) {
+
+    private Produto save(Produto produto) {
         try{
             return produtoRepository.save(produto);
         }catch (DataException e) {
@@ -93,7 +94,7 @@ public class ProdutoService {
         return ProdutoResponseDTO.builder()
                 .nome(produto.getNome())
                 .descricao(produto.getDescricao())
-                .preco(produto.getPreco())
+                .preco(produto.getPreco()) // Atribuição direta (BigDecimal para BigDecimal)
                 .marca(new MarcaResponseDTO(produto.getMarca()))
                 .categoria(produto.getCategoria())
                 .build();

@@ -53,8 +53,8 @@ public class FornecedorService {
 
     }
 
-    @Transactional
-    public Fornecedor save(Fornecedor fornecedor) {
+
+    private Fornecedor save(Fornecedor fornecedor) {
         try{
             return fornecedorRepository.save(fornecedor);
         }catch (DataException e){
